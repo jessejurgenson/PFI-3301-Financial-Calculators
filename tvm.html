@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PFI 3301 TVM Calculator</title>
+<title>Applied Personal Finance Time Value of Money Calculator</title>
 <meta name="description" content="Educational time value of money calculator for PFI 3301.">
 <style>
 :root{
@@ -213,6 +213,20 @@ footer{
   .grid-2,.grid-3,.result-grid{grid-template-columns:1fr}
   .actions button{width:100%}
 }
+
+/* Shared instructional content styles */
+.badge{display:inline-block;padding:2px 7px;border-radius:999px;background:#f3f4f6;font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px}
+.subtitle{color:var(--muted,#6b7280);margin:0}
+.help{font-weight:400;color:var(--muted,#6b7280);font-size:.86rem;margin-top:4px}
+details.edu-detail{margin-top:10px;border:1px solid var(--border,#d1d5db);border-radius:8px;padding:12px;background:#fff}
+details.edu-detail summary{cursor:pointer;font-weight:700;font-size:1rem}
+details.edu-detail .details-content{margin-top:12px}
+.edu-formula{background:var(--panel,#f8fafc);border-left:4px solid var(--accent,#b91c1c);padding:10px 12px;border-radius:8px;margin:10px 0;font-weight:700}
+.edu-note{background:var(--panel,#f8fafc);border-left:4px solid var(--accent,#b91c1c);padding:12px;border-radius:8px;margin:14px 0}
+.edu-source-list li{margin:.5rem 0}.edu-source-list a{color:#1d4ed8;overflow-wrap:anywhere}
+.edu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.edu-grid>div{border:1px solid var(--border,#d1d5db);border-radius:8px;padding:12px}
+@media(max-width:700px){.edu-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 
@@ -220,9 +234,10 @@ footer{
 <main>
 
 <header>
-<h1>PFI 3301 TVM Calculator</h1>
+  <div class="badge">Applied Personal Finance</div>
+  <h1>Time Value of Money Calculator</h1>
   <p class="subtitle">Present Value • Future Value • Payment • Interest Rate • Number of Periods</p>
-  <p class="help"><strong>Instructional release:</strong> Version 1.0 • September 2026</p>
+  <p class="help"><strong>Instructional release:</strong> Version 1.1 • November 2026</p>
 </header>
 
 <div class="notice">

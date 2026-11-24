@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Applied Personal Finance Borrowing Decision Calculator</title>
-<meta name="description" content="Educational borrowing decision calculator for comparing multiple borrowing options, costs, payments, fees, and rate structures.">
+<meta name="description" content="This calculator helps students compare borrowing options using more than the monthly payment. It organizes purchase price or borrowing need, down payment, rebates, fees, interest rate, term, payment, total interest, and total cash paid so students can see the full cost tradeoff.">
 <style>
 :root{--bg:#fff;--text:#1f2937;--muted:#6b7280;--border:#d1d5db;--panel:#f8fafc;--accent:#b91c1c;--accent-dark:#991b1b;--focus:#2563eb;--error:#b91c1c;--ok:#166534}
 *{box-sizing:border-box}
@@ -44,23 +44,33 @@ details{margin-top:10px;border:1px solid var(--border);border-radius:8px;padding
 footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:20px}
 @media(max-width:850px){.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){main{padding:12px}.grid-2,.grid-3,.result-grid{grid-template-columns:1fr}.actions button{width:100%}.loan-head{align-items:flex-start}.term-wrap{grid-template-columns:1fr}}
+
+/* Shared instructional content styles */
+.badge{display:inline-block;padding:2px 7px;border-radius:999px;background:#f3f4f6;font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px}
+.subtitle{color:var(--muted,#6b7280);margin:0}
+.help{font-weight:400;color:var(--muted,#6b7280);font-size:.86rem;margin-top:4px}
+details.edu-detail{margin-top:10px;border:1px solid var(--border,#d1d5db);border-radius:8px;padding:12px;background:#fff}
+details.edu-detail summary{cursor:pointer;font-weight:700;font-size:1rem}
+details.edu-detail .details-content{margin-top:12px}
+.edu-formula{background:var(--panel,#f8fafc);border-left:4px solid var(--accent,#b91c1c);padding:10px 12px;border-radius:8px;margin:10px 0;font-weight:700}
+.edu-note{background:var(--panel,#f8fafc);border-left:4px solid var(--accent,#b91c1c);padding:12px;border-radius:8px;margin:14px 0}
+.edu-source-list li{margin:.5rem 0}.edu-source-list a{color:#1d4ed8;overflow-wrap:anywhere}
+.edu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.edu-grid>div{border:1px solid var(--border,#d1d5db);border-radius:8px;padding:12px}
+@media(max-width:700px){.edu-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <main>
 <header>
-<div class="badge">Applied Personal Finance</div>
-<h1>Borrowing Decision Calculator</h1>
-<p class="subtitle">Compare Payments • Interest • Fees • Total Borrowing Cost</p>
-<p class="help"><strong>Instructional release:</strong> Version 1.1 • November 2026</p>
+  <div class="badge">Applied Personal Finance</div>
+  <h1>Borrowing Decision Calculator</h1>
+  <p class="subtitle">Purchase Price • Amount Financed • Payment • Interest • Fees • Total Purchase Cost</p>
+  <p class="help"><strong>Instructional release:</strong> Version 1.2 • November 2026</p>
 </header>
 
-<div class="notice">
-<strong>Purpose:</strong> Use this calculator to compare multiple borrowing or purchase-financing options using the same underlying purchase price or borrowing need.
-It is designed for examples involving vehicle loans, mortgages, student loans, personal loans, and similar installment loans.
-For purchases such as vehicles or homes, the tool can account for down payments, cash rebates, upfront fees, and financed fees before calculating the loan.
-Each option can be modeled as either a fixed-rate loan or a simplified variable-rate loan with one assumed future rate change.
-The calculator performs the arithmetic, but you are responsible for comparing the terms and deciding which differences matter.
+<div class="notice edu-purpose">
+  <strong>Educational use only:</strong> This calculator helps students compare borrowing options using more than the monthly payment. It organizes purchase price or borrowing need, down payment, rebates, fees, interest rate, term, payment, total interest, and total cash paid so students can see the full cost tradeoff. Students remain responsible for selecting appropriate inputs, assumptions, methods, and interpretations.
 </div>
 
 <div class="notice">
@@ -258,6 +268,17 @@ interest-only periods, or graduated payments.
 </details>
 </section>
 
+
+<section class="card instructional-content">
+  <h2>Learning Support &amp; Methodology</h2>
+  <p class="small">Use these sections to understand the concepts behind the calculation, not just the numerical result.</p>
+  
+  <details class="edu-detail"><summary>Understanding the Financial Concepts</summary><div class="details-content"><div class="edu-grid"><div><strong>Payment is not total cost</strong><p>Longer terms often reduce the monthly payment while increasing the amount of interest paid over time.</p></div><div><strong>Rebates and financing interact</strong><p>A cash rebate can reduce the amount financed, but the best offer depends on the financing terms and total cost, not the rebate by itself.</p></div></div></div></details>
+  <details class="edu-detail"><summary>Calculation Method &amp; Assumptions</summary><div class="details-content"><p>The tool uses the standard fully amortizing installment-loan relationship. For each option, amount financed is calculated from the purchase price or borrowing need after subtracting the down payment and cash rebate and adding financed fees. Fixed-rate payments are calculated monthly over the selected term.</p><div class="edu-formula">Amount financed = purchase price/need − down payment − cash rebate + financed fees</div><div class="edu-formula">Total purchase/cash cost = down payment + scheduled loan payments + upfront fees</div><p>Variable-rate mode is a simplified classroom scenario with one assumed future rate change. It is not a forecast or a lender disclosure.</p></div></details>
+  <details class="edu-detail"><summary>Common Mistakes to Avoid</summary><div class="details-content"><ul><li>Choosing a loan solely because it has the lowest monthly payment.</li><li>Forgetting that a longer term can raise total interest.</li><li>Treating a rebate, down payment, and financed fee as if they affect the amount borrowed in the same direction.</li><li>Comparing loan offers using different purchase prices or assumptions.</li></ul></div></details>
+  <details class="edu-detail"><summary>Sources &amp; Methodology</summary><div class="details-content"><p>This calculator combines standard financial mathematics with the instructional structure used in Applied Personal Finance coursework. Sources provide conceptual definitions and consumer guidance; project-specific assumptions come from the course project model.</p><ul class="edu-source-list"><li><a href="https://www.consumerfinance.gov/ask-cfpb/how-do-i-compare-auto-loan-offers-what-should-i-look-at-besides-the-monthly-payment-en-753/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, “How do I compare auto loan offers?”</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/auto-loans/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, Auto Loan Shopping Sheet</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/mortgages/shopping-for-a-mortgage/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, Shopping for a Mortgage</a></li><li><strong>PFI 3301 project solution key:</strong> Course-provided vehicle and mortgage comparison structure.</li></ul><p class="small">Source pages can change over time. For real-world decisions, use current product disclosures and authoritative guidance.</p></div></details>
+  <details class="edu-detail"><summary>Important Disclosures &amp; Limitations</summary><div class="details-content"><ul><li><strong>Instructional tool:</strong> This calculator is designed for learning and course activities. It is not individualized financial, investment, tax, legal, lending, or insurance advice.</li><li><strong>Assumptions matter:</strong> Results depend on the values, timing, formulas, and assumptions entered. Real products and circumstances may use different rules.</li><li><strong>Verify important decisions:</strong> For real-world decisions, confirm calculations and terms using official disclosures, authoritative sources, or an appropriately qualified professional.</li><li><strong>Privacy:</strong> Calculations are performed locally in the browser. The page does not require an account and does not intentionally save or transmit the financial values entered. Do not enter sensitive personal information.</li><li><strong>Course directions control:</strong> When an instructor specifies a particular method, assumption, or rounding convention, follow the course instructions.</li></ul></div></details>
+</section>
 <footer>
 <p><strong>Applied Personal Finance Borrowing Decision Calculator • Version 1.0 • September 2026</strong></p>
 <p>Individually developed instructional resource. Educational use only. Not lending, financial, investment, tax, accounting, or legal advice.</p>

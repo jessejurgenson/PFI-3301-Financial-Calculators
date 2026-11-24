@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Federal Income Tax Estimator</title>
+<title>Applied Personal Finance Federal Income Tax Estimator</title>
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#1f2937;--muted:#667085;--line:#d9dee7;--accent:#9b1c1c;--soft:#f8eeee}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
@@ -39,15 +39,33 @@ table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:7px;bor
   .decision-box strong{color:var(--accent)}
   .subgrid{display:grid;grid-template-columns:1fr 170px;gap:10px;align-items:center;margin:7px 0}
   @media(max-width:540px){.subgrid{grid-template-columns:1fr}}
+
+/* Shared instructional content styles */
+.badge{display:inline-block;padding:2px 7px;border-radius:999px;background:#f3f4f6;font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px}
+.subtitle{color:var(--muted,#6b7280);margin:0}
+.help{font-weight:400;color:var(--muted,#6b7280);font-size:.86rem;margin-top:4px}
+details.edu-detail{margin-top:10px;border:1px solid var(--border,#d1d5db);border-radius:8px;padding:12px;background:#fff}
+details.edu-detail summary{cursor:pointer;font-weight:700;font-size:1rem}
+details.edu-detail .details-content{margin-top:12px}
+.edu-formula{background:var(--panel,#f8fafc);border-left:4px solid var(--accent,#b91c1c);padding:10px 12px;border-radius:8px;margin:10px 0;font-weight:700}
+.edu-note{background:var(--panel,#f8fafc);border-left:4px solid var(--accent,#b91c1c);padding:12px;border-radius:8px;margin:14px 0}
+.edu-source-list li{margin:.5rem 0}.edu-source-list a{color:#1d4ed8;overflow-wrap:anywhere}
+.edu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.edu-grid>div{border:1px solid var(--border,#d1d5db);border-radius:8px;padding:12px}
+@media(max-width:700px){.edu-grid{grid-template-columns:1fr}}
+
 </style>
+<meta name="description" content="This classroom estimator helps students follow the basic federal income-tax sequence from income to adjusted gross income, deductions, taxable income, tax brackets, credits, payments, and the resulting refund or amount due. It is designed for conceptual learning, not tax preparation.">
 </head>
 <body>
-<header><div class="wrap" style="padding:0">
-<div class="eyebrow">Applied Financial Calculators</div>
-<h1>Federal Income Tax Estimator</h1>
-<p>Estimate federal individual income tax and see the calculation from gross income through refund or additional tax due.</p>
-<div class="notice"><b>Educational Use Only.</b> This simplified estimator is not tax-preparation software or tax advice.</div>
-</div></header>
+<header>
+  <div class="badge">Applied Personal Finance</div>
+  <h1>Federal Income Tax Estimator</h1>
+  <p class="subtitle">Gross Income • AGI • Deductions • Taxable Income • Marginal Rate • Refund or Amount Due</p>
+  <p class="help"><strong>Instructional release:</strong> Version 1.1 • November 2026</p>
+</header>
+<div class="notice edu-purpose">
+  <strong>Educational use only:</strong> This classroom estimator helps students follow the basic federal income-tax sequence from income to adjusted gross income, deductions, taxable income, tax brackets, credits, payments, and the resulting refund or amount due. It is designed for conceptual learning, not tax preparation. Students remain responsible for selecting appropriate inputs, assumptions, methods, and interpretations.
+</div>
 
 <main class="wrap">
 <section class="intro-grid" aria-label="Calculator guidance">
@@ -211,6 +229,17 @@ table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:7px;bor
   <h2>About This Tool</h2>
   <p class="small">This calculator is an independently developed instructional resource for educational use. It is not an official Texas Tech University product and is not affiliated with, endorsed by, operated by, or maintained by Texas Tech University.</p>
   <p class="small">The calculator runs locally in your browser after the page loads. No tax information entered into the calculator is intentionally stored by the calculator itself.</p>
+</section>
+
+<section class="card instructional-content">
+  <h2>Learning Support &amp; Methodology</h2>
+  <p class="small">Use these sections to understand the concepts behind the calculation, not just the numerical result.</p>
+  
+  <details class="edu-detail"><summary>Understanding the Financial Concepts</summary><div class="details-content"><div class="edu-grid"><div><strong>Marginal rate</strong><p>The marginal rate applies to the next dollar of ordinary taxable income. It is not the rate applied to all income.</p></div><div><strong>Withholding</strong><p>Withholding is a prepayment of tax. It affects the refund or amount due but is not itself a deduction from taxable income.</p></div></div></div></details>
+  <details class="edu-detail"><summary>Calculation Method &amp; Assumptions</summary><div class="details-content"><p>The estimator models ordinary federal income tax using the selected tax-year bracket and standard-deduction data embedded in the tool. It follows the sequence:</p><div class="edu-formula">Gross income → adjustments → AGI → deduction → taxable income → bracket tax → credits → payments/refund or amount due</div><p>The estimator is deliberately simplified and does not implement every Form 1040 rule or determine eligibility for every deduction or credit.</p></div></details>
+  <details class="edu-detail"><summary>Common Mistakes to Avoid</summary><div class="details-content"><ul><li>Applying the highest marginal rate to all taxable income.</li><li>Confusing a deduction with a tax credit.</li><li>Treating withholding as the same thing as tax liability.</li><li>Using the estimator as a substitute for current IRS forms, instructions, or professional advice.</li></ul></div></details>
+  <details class="edu-detail"><summary>Sources &amp; Methodology</summary><div class="details-content"><p>This calculator combines standard financial mathematics with the instructional structure used in Applied Personal Finance coursework. Sources provide conceptual definitions and consumer guidance; project-specific assumptions come from the course project model.</p><ul class="edu-source-list"><li><a href="https://www.irs.gov/" target="_blank" rel="noopener noreferrer">Internal Revenue Service, federal income tax information and forms</a></li><li><a href="https://www.irs.gov/newsroom/tax-inflation-adjustments" target="_blank" rel="noopener noreferrer">Internal Revenue Service, tax inflation adjustments and filing guidance</a></li><li><strong>PFI 3301 course materials:</strong> Course instructional sequence and examples.</li></ul><p class="small">Source pages can change over time. For real-world decisions, use current product disclosures and authoritative guidance.</p></div></details>
+  <details class="edu-detail"><summary>Important Disclosures &amp; Limitations</summary><div class="details-content"><ul><li><strong>Instructional tool:</strong> This calculator is designed for learning and course activities. It is not individualized financial, investment, tax, legal, lending, or insurance advice.</li><li><strong>Assumptions matter:</strong> Results depend on the values, timing, formulas, and assumptions entered. Real products and circumstances may use different rules.</li><li><strong>Verify important decisions:</strong> For real-world decisions, confirm calculations and terms using official disclosures, authoritative sources, or an appropriately qualified professional.</li><li><strong>Privacy:</strong> Calculations are performed locally in the browser. The page does not require an account and does not intentionally save or transmit the financial values entered. Do not enter sensitive personal information.</li><li><strong>Course directions control:</strong> When an instructor specifies a particular method, assumption, or rounding convention, follow the course instructions.</li></ul></div></details>
 </section>
 </main>
 
