@@ -104,7 +104,7 @@ details.edu-detail .details-content{margin-top:12px}
 
 <div id="customSetup" style="display:none">
   <div class="row"><label>Custom standard deduction<span class="help">Enter the deduction amount provided by your instructor or case.</span></label>
-    <div class="money"><input id="customStandardDeduction" type="number" min="0" step="100" value="0"></div>
+    <div class="money"><input id="customStandardDeduction" type="number" min="0" step="100"></div>
   </div>
   <div class="bracket-editor">
     <label>Custom marginal tax brackets</label>
@@ -120,18 +120,18 @@ details.edu-detail .details-content{margin-top:12px}
 </div>
 
 <div class="card"><h2>2. Income</h2>
-<div class="row"><label>Wages & salaries</label><div class="money"><input id="wages" type="number" min="0" value="99400"></div></div>
-<div class="row"><label>Taxable interest</label><div class="money"><input id="interest" type="number" min="0" value="600"></div></div>
-<div class="row"><label>Ordinary taxable dividends <span class="help">Do not enter qualified dividends here.</span></label><div class="money"><input id="dividends" type="number" min="0" value="0"></div></div>
-<div class="row"><label>Other ordinary taxable income</label><div class="money"><input id="otherIncome" type="number" min="0" value="0"></div></div>
+<div class="row"><label>Wages & salaries</label><div class="money"><input id="wages" type="number" min="0"></div></div>
+<div class="row"><label>Taxable interest</label><div class="money"><input id="interest" type="number" min="0"></div></div>
+<div class="row"><label>Ordinary taxable dividends <span class="help">Do not enter qualified dividends here.</span></label><div class="money"><input id="dividends" type="number" min="0"></div></div>
+<div class="row"><label>Other ordinary taxable income</label><div class="money"><input id="otherIncome" type="number" min="0"></div></div>
 </div>
 
 <div class="card"><h2>3. Adjustments to Income</h2>
 <p class="small">Enter deductible above-the-line adjustments only.</p>
-<div class="row"><label>Deductible traditional IRA contribution</label><div class="money"><input id="ira" type="number" min="0" value="0"></div></div>
-<div class="row"><label>Deductible HSA contribution</label><div class="money"><input id="hsa" type="number" min="0" value="0"></div></div>
-<div class="row"><label>Deductible student loan interest</label><div class="money"><input id="studentLoan" type="number" min="0" value="0"></div></div>
-<div class="row"><label>Other adjustments</label><div class="money"><input id="otherAdj" type="number" min="0" value="0"></div></div>
+<div class="row"><label>Deductible traditional IRA contribution</label><div class="money"><input id="ira" type="number" min="0"></div></div>
+<div class="row"><label>Deductible HSA contribution</label><div class="money"><input id="hsa" type="number" min="0"></div></div>
+<div class="row"><label>Deductible student loan interest</label><div class="money"><input id="studentLoan" type="number" min="0"></div></div>
+<div class="row"><label>Other adjustments</label><div class="money"><input id="otherAdj" type="number" min="0"></div></div>
 </div>
 
 <div class="card"><h2>4. Standard or Itemized Deduction?</h2>
@@ -140,12 +140,12 @@ details.edu-detail .details-content{margin-top:12px}
 <div class="row"><label id="stdLabel">2026 standard deduction</label><div id="std" style="text-align:right;font-weight:800"></div></div>
 
 <h3>Common Itemized Deductions</h3>
-<div class="subgrid"><label>Qualified home mortgage interest<span class="help">Enter the allowable deductible amount.</span></label><div class="money"><input id="mortgageInterest" type="number" min="0" step="100" value="0"></div></div>
-<div class="subgrid"><label>State and local taxes (SALT)<span class="help">Enter the allowable amount after any applicable limits.</span></label><div class="money"><input id="salt" type="number" min="0" step="100" value="0"></div></div>
-<div class="subgrid"><label>Charitable contributions<span class="help">Enter allowable deductible contributions.</span></label><div class="money"><input id="charity" type="number" min="0" step="100" value="0"></div></div>
-<div class="subgrid"><label>Medical & dental expenses paid<span class="help">The calculator deducts only the amount above 7.5% of AGI.</span></label><div class="money"><input id="medicalPaid" type="number" min="0" step="100" value="0"></div></div>
-<div class="subgrid"><label>Investment interest expense<span class="help">Enter the allowable deductible amount.</span></label><div class="money"><input id="investmentInterest" type="number" min="0" step="100" value="0"></div></div>
-<div class="subgrid"><label>Other allowable itemized deductions</label><div class="money"><input id="otherItemized" type="number" min="0" step="100" value="0"></div></div>
+<div class="subgrid"><label>Qualified home mortgage interest<span class="help">Enter the allowable deductible amount.</span></label><div class="money"><input id="mortgageInterest" type="number" min="0" step="100"></div></div>
+<div class="subgrid"><label>State and local taxes (SALT)<span class="help">Enter the allowable amount after any applicable limits.</span></label><div class="money"><input id="salt" type="number" min="0" step="100"></div></div>
+<div class="subgrid"><label>Charitable contributions<span class="help">Enter allowable deductible contributions.</span></label><div class="money"><input id="charity" type="number" min="0" step="100"></div></div>
+<div class="subgrid"><label>Medical & dental expenses paid<span class="help">The calculator deducts only the amount above 7.5% of AGI.</span></label><div class="money"><input id="medicalPaid" type="number" min="0" step="100"></div></div>
+<div class="subgrid"><label>Investment interest expense<span class="help">Enter the allowable deductible amount.</span></label><div class="money"><input id="investmentInterest" type="number" min="0" step="100"></div></div>
+<div class="subgrid"><label>Other allowable itemized deductions</label><div class="money"><input id="otherItemized" type="number" min="0" step="100"></div></div>
 
 <div class="decision-box">
   <div><span class="small">Calculated itemized deductions</span><div class="v" id="itemizedTotal">$0</div></div>
@@ -165,10 +165,10 @@ details.edu-detail .details-content{margin-top:12px}
 </div>
 
 <div class="card"><h2>5. Tax Credits & Taxes Already Paid</h2>
-<div class="row"><label>Nonrefundable tax credits <span class="help">Reduce tax liability, but not below $0 here.</span></label><div class="money"><input id="nonref" type="number" min="0" value="0"></div></div>
-<div class="row"><label>Refundable tax credits <span class="help">Treated as payments after liability is calculated.</span></label><div class="money"><input id="refundable" type="number" min="0" value="0"></div></div>
-<div class="row"><label>Federal income tax withheld</label><div class="money"><input id="withholding" type="number" min="0" value="12500"></div></div>
-<div class="row"><label>Estimated tax payments</label><div class="money"><input id="estimated" type="number" min="0" value="0"></div></div>
+<div class="row"><label>Nonrefundable tax credits <span class="help">Reduce tax liability, but not below $0 here.</span></label><div class="money"><input id="nonref" type="number" min="0"></div></div>
+<div class="row"><label>Refundable tax credits <span class="help">Treated as payments after liability is calculated.</span></label><div class="money"><input id="refundable" type="number" min="0"></div></div>
+<div class="row"><label>Federal income tax withheld</label><div class="money"><input id="withholding" type="number" min="0"></div></div>
+<div class="row"><label>Estimated tax payments</label><div class="money"><input id="estimated" type="number" min="0"></div></div>
 <div class="btns"><button class="primary" id="calc">Calculate Estimate</button><button class="secondary" id="example">Load Jordan Example</button><button class="secondary" id="clear">Clear All</button></div>
 </div>
 </section>
@@ -268,14 +268,14 @@ const num=id=>Math.max(0,Number($(id)?.value)||0);
 const fmt=x=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(x);
 const pct=x=>(x*100).toFixed(1).replace(".0","")+"%";
 
-let customBrackets=[{upper:50000,rate:10},{upper:null,rate:20}];
+let customBrackets=[{upper:null,rate:null}];
 
 function renderCustomBrackets(){
  const host=$("customBracketRows"); host.innerHTML="";
  customBrackets.forEach((b,i)=>{
   const row=document.createElement("div"); row.className="bracket-row";
-  row.innerHTML=`<div><label class="small">${i===customBrackets.length-1?"Upper limit (blank = no upper limit)":"Upper limit"}</label><input type="number" min="0" step="100" data-upper="${i}" value="${b.upper===null?"":b.upper}" placeholder="${i===customBrackets.length-1?"No upper limit":"e.g., 50000"}"></div>
-  <div><label class="small">Tax rate (%)</label><input type="number" min="0" max="100" step="0.1" data-rate="${i}" value="${b.rate}"></div>
+  row.innerHTML=`<div><label class="small">${i===customBrackets.length-1?"Upper limit (blank = no upper limit)":"Upper limit"}</label><input type="number" min="0" step="100" data-upper="${i}"":b.upper}" placeholder="${i===customBrackets.length-1?"No upper limit":"e.g., 50000"}"></div>
+  <div><label class="small">Tax rate (%)</label><input type="number" min="0" max="100" step="0.1" data-rate="${i}"></div>
   <button type="button" class="icon-btn" data-remove="${i}" aria-label="Remove bracket">×</button>`;
   host.appendChild(row);
  });
@@ -378,7 +378,7 @@ function loadJordan(){
  $("deductionType").value="auto";updateModeUI();
 }
 function clearAll(){
- ["wages","interest","dividends","otherIncome","ira","hsa","studentLoan","otherAdj","mortgageInterest","salt","charity","medicalPaid","investmentInterest","otherItemized","nonref","refundable","withholding","estimated","customStandardDeduction"].forEach(k=>{if($(k))$(k).value=0});
+ ["wages","interest","dividends","otherIncome","ira","hsa","studentLoan","otherAdj","mortgageInterest","salt","charity","medicalPaid","investmentInterest","otherItemized","nonref","refundable","withholding","estimated","customStandardDeduction"].forEach(k=>{if($(k))$(k).value=""});
  $("deductionType").value="auto";calculate();
 }
 
@@ -394,6 +394,6 @@ $("customStandardDeduction").addEventListener("input",calculate);
 $("addBracket").addEventListener("click",()=>{customBrackets.splice(customBrackets.length-1,0,{upper:null,rate:0});renderCustomBrackets();calculate()});
 $("loadSimpleBrackets").addEventListener("click",()=>{customBrackets=[{upper:50000,rate:10},{upper:null,rate:20}];$("customStandardDeduction").value=0;renderCustomBrackets();calculate()});
 
-renderCustomBrackets();loadJordan();
+renderCustomBrackets();updateModeUI();
 </script>
 </body></html>

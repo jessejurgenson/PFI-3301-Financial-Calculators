@@ -276,7 +276,7 @@ interest-only periods, or graduated payments.
   <details class="edu-detail"><summary>Understanding the Financial Concepts</summary><div class="details-content"><div class="edu-grid"><div><strong>Payment is not total cost</strong><p>Longer terms often reduce the monthly payment while increasing the amount of interest paid over time.</p></div><div><strong>Rebates and financing interact</strong><p>A cash rebate can reduce the amount financed, but the best offer depends on the financing terms and total cost, not the rebate by itself.</p></div></div></div></details>
   <details class="edu-detail"><summary>Calculation Method &amp; Assumptions</summary><div class="details-content"><p>The tool uses the standard fully amortizing installment-loan relationship. For each option, amount financed is calculated from the purchase price or borrowing need after subtracting the down payment and cash rebate and adding financed fees. Fixed-rate payments are calculated monthly over the selected term.</p><div class="edu-formula">Amount financed = purchase price/need − down payment − cash rebate + financed fees</div><div class="edu-formula">Total purchase/cash cost = down payment + scheduled loan payments + upfront fees</div><p>Variable-rate mode is a simplified classroom scenario with one assumed future rate change. It is not a forecast or a lender disclosure.</p></div></details>
   <details class="edu-detail"><summary>Common Mistakes to Avoid</summary><div class="details-content"><ul><li>Choosing a loan solely because it has the lowest monthly payment.</li><li>Forgetting that a longer term can raise total interest.</li><li>Treating a rebate, down payment, and financed fee as if they affect the amount borrowed in the same direction.</li><li>Comparing loan offers using different purchase prices or assumptions.</li></ul></div></details>
-  <details class="edu-detail"><summary>Sources &amp; Methodology</summary><div class="details-content"><p>This calculator combines standard financial mathematics with the instructional structure used in Applied Personal Finance coursework. Sources provide conceptual definitions and consumer guidance; project-specific assumptions come from the course project model.</p><ul class="edu-source-list"><li><a href="https://www.consumerfinance.gov/ask-cfpb/how-do-i-compare-auto-loan-offers-what-should-i-look-at-besides-the-monthly-payment-en-753/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, “How do I compare auto loan offers?”</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/auto-loans/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, Auto Loan Shopping Sheet</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/mortgages/shopping-for-a-mortgage/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, Shopping for a Mortgage</a></li><li><strong>PFI 3301 project solution key:</strong> Course-provided vehicle and mortgage comparison structure.</li></ul><p class="small">Source pages can change over time. For real-world decisions, use current product disclosures and authoritative guidance.</p></div></details>
+  <details class="edu-detail"><summary>Sources &amp; Methodology</summary><div class="details-content"><p>This calculator combines standard financial mathematics with the instructional structure used in Applied Personal Finance coursework. Sources provide conceptual definitions and consumer guidance; project-specific assumptions come from the course project model.</p><ul class="edu-source-list"><li><a href="https://www.consumerfinance.gov/ask-cfpb/how-do-i-compare-auto-loan-offers-what-should-i-look-at-besides-the-monthly-payment-en-753/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, “How do I compare auto loan offers?”</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/auto-loans/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, Auto Loan Shopping Sheet</a></li><li><a href="https://www.consumerfinance.gov/consumer-tools/mortgages/shopping-for-a-mortgage/" target="_blank" rel="noopener noreferrer">Consumer Financial Protection Bureau, Shopping for a Mortgage</a></li><li><strong>PFI 3301 course example:</strong> Course-provided vehicle and mortgage comparison structure.</li></ul><p class="small">Source pages can change over time. For real-world decisions, use current product disclosures and authoritative guidance.</p></div></details>
   <details class="edu-detail"><summary>Important Disclosures &amp; Limitations</summary><div class="details-content"><ul><li><strong>Instructional tool:</strong> This calculator is designed for learning and course activities. It is not individualized financial, investment, tax, legal, lending, or insurance advice.</li><li><strong>Assumptions matter:</strong> Results depend on the values, timing, formulas, and assumptions entered. Real products and circumstances may use different rules.</li><li><strong>Verify important decisions:</strong> For real-world decisions, confirm calculations and terms using official disclosures, authoritative sources, or an appropriately qualified professional.</li><li><strong>Privacy:</strong> Calculations are performed locally in the browser. The page does not require an account and does not intentionally save or transmit the financial values entered. Do not enter sensitive personal information.</li><li><strong>Course directions control:</strong> When an instructor specifies a particular method, assumption, or rounding convention, follow the course instructions.</li></ul></div></details>
 </section>
 <footer>
@@ -411,23 +411,23 @@ interest-only periods, or graduated payments.
           </div>
         </label>
         <label>Down Payment
-          <input class="loan-down" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.down ?? '0'}">
+          <input class="loan-down" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.down ?? ''}">
           <span class="help">Cash you pay toward the purchase before financing.</span>
         </label>
         <label>Cash Rebate
-          <input class="loan-rebate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.rebate ?? '0'}">
+          <input class="loan-rebate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.rebate ?? ''}">
           <span class="help">Manufacturer or dealer rebate that reduces the amount financed.</span>
         </label>
       </div>
       <div class="grid grid-3" style="margin-top:12px;">
         <label>Upfront Fees
-          <input class="loan-upfront" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.upfront ?? '0'}">
+          <input class="loan-upfront" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.upfront ?? ''}">
           <span class="help">Paid separately, not added to balance.</span>
         </label>
       </div>
       <div class="grid grid-3" style="margin-top:12px;">
         <label>Financed Fees
-          <input class="loan-financed" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.financed ?? '0'}">
+          <input class="loan-financed" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.financed ?? ''}">
           <span class="help">Added to the loan balance.</span>
         </label>
       </div>`;
@@ -616,9 +616,9 @@ interest-only periods, or graduated payments.
     $('message').textContent='';
     $('results').classList.add('hidden');
     loanCounter=0;
-    addLoan({name:'Option A'});
-    addLoan({name:'Option B'});
-    addLoan({name:'Option C'});
+    addLoan();
+    addLoan();
+    addLoan();
     $('baseBorrow').focus();
   }
 
@@ -626,9 +626,9 @@ interest-only periods, or graduated payments.
   $('calculate').addEventListener('click',calculate);
   $('clearAll').addEventListener('click',clearAll);
 
-  addLoan({name:'Option A'});
-  addLoan({name:'Option B'});
-  addLoan({name:'Option C'});
+  addLoan();
+  addLoan();
+  addLoan();
 })();
 </script>
 </body>
