@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applied Personal Finance Financial Statements & Ratios Calculator</title>
+<meta name="description" content="Educational financial statements and financial ratios calculator for Applied Personal Finance coursework.">
+<style>
+:root{
+  --bg:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#d1d5db;
+  --panel:#f8fafc;
+  --accent:#b91c1c;
+  --accent-dark:#991b1b;
+  --focus:#2563eb;
+  --error:#b91c1c;
+  --ok:#166534;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
+main{
+  max-width:1100px;
+  margin:0 auto;
+  padding:16px;
+}
+header{
+  padding:8px 0 16px;
+  border-bottom:4px solid var(--accent);
+  margin-bottom:20px;
+}
+h1{
+  font-size:clamp(1.65rem,4vw,2.35rem);
+  margin:0 0 4px;
+}
+h2{
+  font-size:1.25rem;
+  margin:0 0 12px;
+}
+h3{
+  font-size:1.05rem;
+  margin:18px 0 8px;
+}
+h4{
+  font-size:.98rem;
+  margin:14px 0 6px;
+}
+p{margin:8px 0}
+ul,ol{padding-left:1.3rem}
+li{margin:.45rem 0}
+.subtitle{
+  color:var(--muted);
+  margin:0;
+}
+.card{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+  margin:16px 0;
+  background:#fff;
+}
+.notice{
+  background:var(--panel);
+  border-left:4px solid var(--accent);
+  padding:12px;
+  border-radius:8px;
+}
+.grid{
+  display:grid;
+  gap:14px;
+}
+.grid-2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.grid-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+label{
+  display:block;
+  font-weight:700;
+  font-size:.95rem;
+}
+.help{
+  font-weight:400;
+  color:var(--muted);
+  font-size:.86rem;
+  margin-top:4px;
+}
+input,select,button,textarea{
+  font:inherit;
+  border-radius:8px;
+  border:1px solid var(--border);
+}
+input,select{
+  width:100%;
+  min-height:44px;
+  padding:9px 10px;
+  background:#fff;
+  color:var(--text);
+}
+textarea{
+  width:100%;
+  min-height:90px;
+  padding:10px 12px;
+  resize:vertical;
+}
+input:focus,select:focus,button:focus,textarea:focus,summary:focus{
+  outline:3px solid rgba(37,99,235,.25);
+  outline-offset:2px;
+}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+button{
+  width:auto;
+  min-height:44px;
+  padding:9px 16px;
+  font-weight:700;
+  cursor:pointer;
+}
+.primary{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+}
+.primary:hover{background:var(--accent-dark)}
+.secondary{
+  background:#fff;
+  color:var(--text);
+}
+.danger-lite{
+  background:#fff;
+  color:var(--error);
+  border-color:#f3b5b5;
+}
+.row-remove{
+  width:40px;
+  padding:6px;
+  min-height:40px;
+}
+.error{
+  color:var(--error);
+  font-weight:700;
+  margin-top:12px;
+}
+.success{
+  color:var(--ok);
+  font-weight:700;
+}
+.hidden{display:none!important}
+.small{
+  font-size:.88rem;
+  color:var(--muted);
+}
+details{
+  margin-top:10px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  background:#fff;
+}
+summary{
+  cursor:pointer;
+  font-weight:700;
+  font-size:1rem;
+}
+.details-content{
+  margin-top:12px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+th,td{
+  border-bottom:1px solid var(--border);
+  padding:9px 7px;
+  text-align:left;
+  vertical-align:middle;
+}
+th{
+  background:var(--panel);
+  font-size:.86rem;
+}
+.entry-table td{
+  padding:7px 5px;
+}
+.entry-table .desc{min-width:180px}
+.entry-table .amt{min-width:120px}
+.entry-table .freq{min-width:135px}
+.entry-table .type{min-width:180px}
+.entry-table .check{
+  text-align:center;
+  min-width:120px;
+}
+.entry-table input[type="checkbox"]{
+  width:20px;
+  height:20px;
+  min-height:auto;
+}
+.statement-title{
+  font-weight:800;
+  font-size:1.05rem;
+  padding:10px 0 3px;
+  border-bottom:2px solid var(--text);
+}
+.statement-sub{
+  font-weight:700;
+  padding-top:10px;
+}
+.amount{
+  text-align:right;
+  white-space:nowrap;
+}
+.total-row td{
+  font-weight:700;
+  border-top:1px solid var(--text);
+}
+.grand-total td{
+  font-weight:800;
+  border-top:2px solid var(--text);
+}
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+.metric{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  background:#fff;
+}
+.metric .k{
+  font-size:.78rem;
+  color:var(--muted);
+}
+.metric .v{
+  font-weight:800;
+  font-size:1.15rem;
+  margin-top:3px;
+}
+.ratio-card{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:12px;
+  margin-top:10px;
+}
+.ratio-name{font-weight:800}
+.ratio-value{
+  font-size:1.35rem;
+  font-weight:800;
+  margin:3px 0;
+}
+.formula{
+  font-size:.88rem;
+  color:var(--muted);
+}
+.badge{
+  display:inline-block;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#f3f4f6;
+  font-size:.75rem;
+  font-weight:700;
+  color:#374151;
+}
+footer{
+  font-size:.82rem;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+  padding-top:12px;
+  margin-top:20px;
+}
+@media(max-width:850px){
+  .result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .entry-wrap{overflow-x:auto}
+  .entry-table{min-width:820px}
+}
+@media(max-width:700px){
+  main{padding:12px}
+  .grid-2,.grid-3,.result-grid{grid-template-columns:1fr}
+  .actions button{width:100%}
+}
+@media print{
+  .no-print,details,header .help,footer{display:none!important}
+  body{font-size:11pt}
+  .card{border:none;padding:0;margin:8px 0}
+  #results{display:block!important}
+}
+</style>
+</head>
+
+<body>
+<main>
+
+<header>
+  <div class="badge">Applied Personal Finance</div>
+  <h1>Financial Statements &amp; Ratios Calculator</h1>
+  <p class="subtitle">Statement of Cash Flows • Statement of Net Worth • Financial Ratios</p>
+  <p class="help"><strong>Instructional release:</strong> Version 1.1 • November 2026</p>
+</header>
+
+<div class="notice">
+  <strong>Educational use only:</strong>
+  This calculator is designed to help students organize financial information, construct personal financial statements,
+  calculate common financial ratios, and interpret the resulting relationships. The calculator performs arithmetic,
+  but students remain responsible for choosing the correct classifications, categories, assumptions, and interpretations.
+</div>
+
+<section class="card">
+  <h2>1. Cash Flow Entries</h2>
+  <p class="small">
+    Add income and cash-outflow items for the period being analyzed. Enter positive dollar amounts.
+    Choose the frequency and classify each item. The calculator converts each entry to annual and monthly amounts.
+  </p>
+
+  <div class="entry-wrap">
+    <table class="entry-table" id="cashTable">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Frequency</th>
+          <th>Classification</th>
+          <th>Short-Term Debt Payment?</th>
+          <th>Long-Term Debt Payment?</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="cashBody"></tbody>
+    </table>
+  </div>
+
+  <div class="actions no-print">
+    <button class="secondary" type="button" id="addCash">+ Add Cash Flow</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>2. Net Worth Entries</h2>
+  <p class="small">
+    Add assets and liabilities as of the statement date. Enter current values or outstanding balances as positive dollar amounts.
+    You decide where each item belongs.
+  </p>
+
+  <div class="entry-wrap">
+    <table class="entry-table" id="worthTable">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Classification</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="worthBody"></tbody>
+    </table>
+  </div>
+
+  <div class="actions no-print">
+    <button class="secondary" type="button" id="addWorth">+ Add Asset or Liability</button>
+  </div>
+</section>
+
+<section class="card" id="projectMode"><h2>PFI 3301 LO3 Project Mode</h2><p class="small">Load Jessica's project facts into the calculator, then review the classifications and calculate the statements and ratios.</p><div class="actions no-print"><button class="primary" type="button" id="loadJessica">Load Jessica Project Example</button></div></section>
+
+<section class="card">
+  <h2>3. Statement Settings</h2>
+
+  <div class="grid grid-2">
+    <label>Statement Date
+      <input id="statementDate" type="text" placeholder="Example: December 31, 2026">
+      <span class="help">Optional. Used only as a label on the statement of net worth.</span>
+    </label>
+
+    <label>Case / Household Name
+      <input id="caseName" type="text" placeholder="Optional name or scenario label">
+      <span class="help">Optional. Useful when working multiple examples.</span>
+    </label>
+  </div>
+
+  <h3 style="margin-top:18px;">Choose Ratios to Calculate</h3>
+  <p class="small">Select only the ratios you want included in the results.</p>
+
+  <div class="grid grid-2 no-print">
+    <label><input class="ratio-select" type="checkbox" id="selMonths" checked> Months of Living Expenses Covered</label>
+    <label><input class="ratio-select" type="checkbox" id="selDebt" checked> Debt Ratio</label>
+    <label><input class="ratio-select" type="checkbox" id="selLtCoverage" checked> Long-Term Debt Coverage</label>
+    <label><input class="ratio-select" type="checkbox" id="selInvest" checked> Investment Assets to Total Assets</label>
+    <label><input class="ratio-select" type="checkbox" id="selDebtService" checked> Debt Service to Income Ratio</label>
+    <label><input class="ratio-select" type="checkbox" id="selSavings" checked> Savings Ratio</label>
+  </div>
+
+  <div class="actions no-print">
+    <button id="selectAllRatios" class="secondary" type="button">Select All Ratios</button>
+    <button id="clearRatios" class="secondary" type="button">Clear Ratio Selections</button>
+  </div>
+
+  <div class="actions no-print">
+    <button id="calc" class="primary" type="button">Calculate Statements &amp; Ratios</button>
+    <button id="clear" class="secondary" type="button">Clear All</button>
+  </div>
+
+  <div id="message" class="error" role="alert" aria-live="polite"></div>
+</section>
+
+<section id="results" class="card hidden" aria-live="polite">
+  <div id="resultHeading"></div>
+
+  <h2>Statement of Cash Flows</h2>
+  <div id="cashStatement"></div>
+
+  <h2 style="margin-top:26px;">Statement of Net Worth</h2>
+  <div id="worthStatement"></div>
+
+  <h2 style="margin-top:26px;">Financial Ratios</h2>
+  <div id="ratioSummary" class="result-grid"></div>
+  <div id="ratioDetails"></div>
+
+  <div class="notice" style="margin-top:18px;">
+    <strong>Interpretation reminder:</strong>
+    A calculated ratio describes a financial relationship. The calculator does not determine whether a result is automatically
+    "good" or "bad." Interpretation should consider the household, goals, time horizon, risks, and the assumptions used in the problem.
+  </div>
+
+  <details>
+    <summary>Copyable Results Summary</summary>
+    <div class="details-content">
+      <textarea id="copyText" readonly></textarea>
+      <div class="actions no-print">
+        <button id="copyBtn" class="secondary" type="button">Copy Results</button>
+        <button id="printBtn" class="secondary" type="button">Print / Save as PDF</button>
+      </div>
+      <div id="copyStatus" class="small"></div>
+    </div>
+  </details>
+</section>
+
+<section class="card">
+  <details>
+    <summary>How to Use This Calculator</summary>
+    <div class="details-content">
+      <h3>1. Enter Cash Flows</h3>
+      <p>
+        Add income and cash-outflow items. Enter each amount as a positive number and choose how often it occurs.
+        The calculator converts each amount to annual and monthly values.
+      </p>
+
+      <h3>2. Classify Cash Outflows</h3>
+      <p>
+        Choose whether each outflow is a fixed expense, variable expense, or savings/investment contribution.
+        This classification is your responsibility.
+      </p>
+      <p>
+        If an expense represents a payment on debt, identify whether it is a <strong>Short-Term Debt Payment</strong>
+        or a <strong>Long-Term Debt Payment</strong>. The two indicators are mutually exclusive for each row.
+        The long-term debt indicator is used in the long-term debt coverage ratio, while the short-term indicator
+        is retained in the results summary for instructional analysis.
+      </p>
+
+      <h3>3. Enter Assets and Liabilities</h3>
+      <p>
+        Add the current value of assets and the outstanding balance of liabilities. Classify each entry as:
+      </p>
+      <ul>
+        <li><strong>Monetary Asset</strong></li>
+        <li><strong>Investment Asset</strong></li>
+        <li><strong>Retirement Asset</strong></li>
+        <li><strong>Household / Personal Property</strong></li>
+        <li><strong>Short-Term Liability</strong></li>
+        <li><strong>Long-Term Liability</strong></li>
+      </ul>
+
+      <h3>4. Choose the Ratios You Want</h3>
+      <p>
+        Select only the financial ratios relevant to your problem or assignment. You can select all ratios,
+        clear the selections, or choose any combination.
+      </p>
+
+      <h3>5. Calculate</h3>
+      <p>
+        Select <strong>Calculate Statements &amp; Ratios</strong>. The calculator will construct a statement of cash flows,
+        a statement of net worth, and only the financial ratios you selected.
+      </p>
+
+      <h3>6. Interpret the Results</h3>
+      <p>
+        Use the statements and ratios to evaluate the financial situation described in your problem.
+        The tool performs arithmetic and organization, but it does not replace your financial judgment.
+      </p>
+
+      <h3>7. Start a New Example</h3>
+      <p>
+        Select <strong>Clear All</strong> to remove all entries and begin a different problem or scenario.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section class="card">
+  <details>
+    <summary>Understanding Personal Financial Statements</summary>
+    <div class="details-content">
+      <h3>Statement of Cash Flows</h3>
+      <p>
+        A personal statement of cash flows summarizes money received and money paid over a period of time.
+        It helps show whether cash inflows are sufficient to support expenses, saving, and other financial priorities.
+      </p>
+      <p><strong>Net Discretionary Cash Flow = Total Cash Inflows − Total Cash Outflows</strong></p>
+
+      <h3>Statement of Net Worth</h3>
+      <p>
+        A statement of net worth is a point-in-time summary of what a person or household owns and owes.
+      </p>
+      <p><strong>Net Worth = Total Assets − Total Liabilities</strong></p>
+
+      <h3>Stocks and Flows Are Different</h3>
+      <p>
+        An asset or liability is generally measured at a point in time. Income and expenses are generally measured over a period of time.
+        Distinguishing between these two types of information is an important part of constructing personal financial statements.
+      </p>
+
+      <h3>Classification Still Requires Judgment</h3>
+      <p>
+        The calculator does not know the meaning of an item simply because of its name.
+        Students should use the facts of the problem and course conventions to determine the appropriate classification.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section class="card">
+  <details>
+    <summary>Financial Ratio Formulas &amp; Interpretation</summary>
+    <div class="details-content">
+      <h3>Months of Living Expenses Covered</h3>
+      <p><strong>Monetary Assets ÷ Monthly Living Expenses</strong></p>
+      <p>
+        This ratio estimates how many months of current living expenses could be covered by monetary assets.
+        In this calculator, monthly living expenses include fixed and variable expenses and exclude savings/investment contributions.
+      </p>
+
+      <h3>Debt Ratio</h3>
+      <p><strong>Total Liabilities ÷ Total Assets</strong></p>
+      <p>
+        This ratio shows the proportion of total assets represented by liabilities.
+      </p>
+
+      <h3>Long-Term Debt Coverage</h3>
+      <p><strong>Total Annual Income ÷ Total Annual Long-Term Debt Payments</strong></p>
+      <p>
+        This ratio compares annual income with annual payments on long-term debt.
+        Expense rows marked as long-term debt payments are included in the denominator.
+      </p>
+
+      <h3>Investment Assets to Total Assets</h3>
+      <p><strong>(Investment Assets + Retirement Assets) ÷ Total Assets</strong></p>
+      <p>
+        This ratio shows the proportion of total assets held in investment and retirement assets.
+      </p>
+
+      <h3>Debt Service to Income Ratio</h3>
+      <p><strong>Annual Debt Payments ÷ Total Annual Income</strong></p>
+      <p>
+        This calculator defines annual debt payments as the combined short-term and long-term debt payments
+        identified in the cash-flow entries. The ratio shows the proportion of annual income committed to debt service.
+      </p>
+
+      <h3>Savings Ratio</h3>
+      <p><strong>Annual Savings and Investment Contributions ÷ Total Annual Income</strong></p>
+      <p>
+        This ratio shows the proportion of annual income directed to savings and investment contributions.
+        Only cash-flow entries classified as <strong>Savings / Investment Contribution</strong> are included in the numerator.
+      </p>
+
+      <h3>Important</h3>
+      <p>
+        Ratio definitions can vary across textbooks, instructors, and professional settings.
+        In this tool, the debt service to income ratio uses total identified short-term and long-term debt payments divided by total income,
+        and the savings ratio uses identified savings and investment contributions divided by total income.
+        When course instructions specify a particular formula or convention, those instructions control.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section class="card">
+  <details>
+    <summary>Calculation Method &amp; Assumptions</summary>
+    <div class="details-content">
+      <h3>Frequency Conversion</h3>
+      <p>
+        Cash-flow entries are converted to annual amounts using the selected frequency:
+      </p>
+      <ul>
+        <li>Annual: amount × 1</li>
+        <li>Semiannual: amount × 2</li>
+        <li>Quarterly: amount × 4</li>
+        <li>Monthly: amount × 12</li>
+        <li>Biweekly: amount × 26</li>
+        <li>Weekly: amount × 52</li>
+      </ul>
+      <p>
+        Monthly equivalents are calculated as the annual amount divided by 12.
+      </p>
+
+      <h3>Living Expenses</h3>
+      <p>
+        For the months-of-living-expenses-covered ratio, this calculator treats fixed and variable expenses as living expenses.
+        Savings and investment contributions are excluded from that denominator.
+      </p>
+
+      <h3>Rounding</h3>
+      <p>
+        Dollar amounts are displayed to the nearest cent. Ratios are calculated using unrounded values and then formatted for display.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section class="card">
+  <details>
+    <summary>Important Disclosures &amp; Limitations</summary>
+    <div class="details-content">
+      <ul>
+        <li>
+          <strong>Classroom and educational use:</strong>
+          This tool is intended for instructional practice and course-related learning.
+          It is not a substitute for professional judgment or personalized advice.
+        </li>
+        <li>
+          <strong>Independent instructional tool:</strong>
+          This calculator is an individually developed instructional resource and is not an official Texas Tech University product.
+          It is not affiliated with, endorsed by, operated by, or maintained by Texas Tech University.
+        </li>
+        <li>
+          <strong>No financial or investment advice:</strong>
+          Results are illustrative and should not be interpreted as a recommendation to borrow, save, invest, purchase, sell, or enter into a financial transaction.
+        </li>
+        <li>
+          <strong>No legal, tax, or accounting advice:</strong>
+          The calculator does not evaluate laws, regulations, taxes, contracts, accounting standards, or legal consequences.
+        </li>
+        <li>
+          <strong>Classification assumptions matter:</strong>
+          Results depend on how entries are classified. Different course materials or professional contexts may use different classifications or ratio definitions.
+        </li>
+        <li>
+          <strong>Verify important calculations:</strong>
+          For graded work, follow course instructions. For real-world decisions, verify important information using authoritative sources or an appropriately qualified professional.
+        </li>
+        <li>
+          <strong>Software limitation:</strong>
+          Although the calculator is designed around standard personal financial statement relationships, software can contain errors.
+          Recheck entries and independently verify any result that appears unreasonable.
+        </li>
+        <li>
+          <strong>Privacy:</strong>
+          Calculations are performed locally in your browser. This page does not require an account and does not intentionally save or transmit the financial values you enter.
+          Avoid entering sensitive personal information because it is unnecessary for using the tool.
+        </li>
+        <li>
+          <strong>Course use:</strong>
+          Your instructor may specify particular assumptions, classifications, formulas, rounding rules, or required methods.
+          Course instructions control when they differ from this tool's default behavior.
+        </li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<footer>
+  <p><strong>Applied Personal Finance Financial Statements &amp; Ratios Calculator • Version 1.1 • November 2026</strong></p>
+  <p>
+    Individually developed instructional resource. Educational use only.
+    Not financial, investment, tax, accounting, or legal advice.
+  </p>
+</footer>
+
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+
+  const cashFactors = {
+    annual: 1,
+    semiannual: 2,
+    quarterly: 4,
+    monthly: 12,
+    biweekly: 26,
+    weekly: 52
+  };
+
+  const cashFrequencyLabels = {
+    annual: 'Annual',
+    semiannual: 'Semiannual',
+    quarterly: 'Quarterly',
+    monthly: 'Monthly',
+    biweekly: 'Biweekly',
+    weekly: 'Weekly'
+  };
+
+  const cashTypeLabels = {
+    income: 'Income',
+    fixed: 'Fixed Expense',
+    variable: 'Variable Expense',
+    savings: 'Savings / Investment Contribution'
+  };
+
+  const worthTypeLabels = {
+    monetary: 'Monetary Asset',
+    investment: 'Investment Asset',
+    retirement: 'Retirement Asset',
+    household: 'Household / Personal Property',
+    short: 'Short-Term Liability',
+    long: 'Long-Term Liability'
+  };
+
+  function money(x){
+    return new Intl.NumberFormat('en-US',{
+      style:'currency',
+      currency:'USD',
+      maximumFractionDigits:2
+    }).format(Number.isFinite(x) ? x : 0);
+  }
+
+  function percent(x){
+    return Number.isFinite(x) ? `${(x*100).toFixed(2)}%` : 'Not available';
+  }
+
+  function ratioNum(x){
+    return Number.isFinite(x) ? x.toFixed(2) : 'Not available';
+  }
+
+  function esc(s){
+    return String(s ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+
+  function addCashRow(values={}){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><input class="cash-desc" type="text" placeholder="Example: Salary" value="${esc(values.desc||'')}"></td>
+      <td><input class="cash-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.amount ?? ''}"></td>
+      <td>
+        <select class="cash-freq">
+          <option value="">Select...</option>
+          ${Object.entries(cashFrequencyLabels).map(([v,l])=>`<option value="${v}" ${values.freq===v?'selected':''}>${l}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select class="cash-type">
+          <option value="">Select...</option>
+          ${Object.entries(cashTypeLabels).map(([v,l])=>`<option value="${v}" ${values.type===v?'selected':''}>${l}</option>`).join('')}
+        </select>
+      </td>
+      <td class="check">
+        <input class="cash-stdebt" type="checkbox" aria-label="Short-term debt payment" ${values.stdebt?'checked':''}>
+      </td>
+      <td class="check">
+        <input class="cash-ltdebt" type="checkbox" aria-label="Long-term debt payment" ${values.ltdebt?'checked':''}>
+      </td>
+      <td><button class="row-remove danger-lite" type="button" aria-label="Remove row">×</button></td>
+    `;
+    tr.querySelector('.row-remove').addEventListener('click',()=>tr.remove());
+    const stBox=tr.querySelector('.cash-stdebt');
+    const ltBox=tr.querySelector('.cash-ltdebt');
+
+    tr.querySelector('.cash-type').addEventListener('change',()=>{
+      const t=tr.querySelector('.cash-type').value;
+      const disabled=(t==='income' || t==='savings');
+      if(disabled){
+        stBox.checked=false;
+        ltBox.checked=false;
+      }
+      stBox.disabled=disabled;
+      ltBox.disabled=disabled;
+    });
+
+    stBox.addEventListener('change',()=>{
+      if(stBox.checked) ltBox.checked=false;
+    });
+
+    ltBox.addEventListener('change',()=>{
+      if(ltBox.checked) stBox.checked=false;
+    });
+    $('cashBody').appendChild(tr);
+  }
+
+  function addWorthRow(values={}){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><input class="worth-desc" type="text" placeholder="Example: Checking Account" value="${esc(values.desc||'')}"></td>
+      <td><input class="worth-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.amount ?? ''}"></td>
+      <td>
+        <select class="worth-type">
+          <option value="">Select...</option>
+          ${Object.entries(worthTypeLabels).map(([v,l])=>`<option value="${v}" ${values.type===v?'selected':''}>${l}</option>`).join('')}
+        </select>
+      </td>
+      <td><button class="row-remove danger-lite" type="button" aria-label="Remove row">×</button></td>
+    `;
+    tr.querySelector('.row-remove').addEventListener('click',()=>tr.remove());
+    $('worthBody').appendChild(tr);
+  }
+
+  function getCashEntries(){
+    const entries=[];
+    for(const tr of $('cashBody').querySelectorAll('tr')){
+      const desc=tr.querySelector('.cash-desc').value.trim();
+      const amountRaw=tr.querySelector('.cash-amount').value.trim();
+      const freq=tr.querySelector('.cash-freq').value;
+      const type=tr.querySelector('.cash-type').value;
+      const stdebt=tr.querySelector('.cash-stdebt').checked;
+      const ltdebt=tr.querySelector('.cash-ltdebt').checked;
+
+      if(!desc && !amountRaw && !freq && !type) continue;
+
+      const amount=parseFloat(amountRaw);
+      if(!desc || !Number.isFinite(amount) || amount<0 || !freq || !type){
+        throw new Error('Complete the description, amount, frequency, and classification for each cash-flow row you use.');
+      }
+
+      const annual=amount*cashFactors[freq];
+      entries.push({
+        desc,amount,freq,type,stdebt,ltdebt,
+        annual,
+        monthly:annual/12
+      });
+    }
+    return entries;
+  }
+
+  function getWorthEntries(){
+    const entries=[];
+    for(const tr of $('worthBody').querySelectorAll('tr')){
+      const desc=tr.querySelector('.worth-desc').value.trim();
+      const amountRaw=tr.querySelector('.worth-amount').value.trim();
+      const type=tr.querySelector('.worth-type').value;
+
+      if(!desc && !amountRaw && !type) continue;
+
+      const amount=parseFloat(amountRaw);
+      if(!desc || !Number.isFinite(amount) || amount<0 || !type){
+        throw new Error('Complete the description, amount, and classification for each net-worth row you use.');
+      }
+
+      entries.push({desc,amount,type});
+    }
+    return entries;
+  }
+
+  function statementRows(items){
+    if(items.length===0){
+      return `<tr><td class="small">No entries</td><td class="amount">—</td><td class="amount">—</td></tr>`;
+    }
+    return items.map(x=>`
+      <tr>
+        <td>${esc(x.desc)}</td>
+        <td class="amount">${money(x.annual)}</td>
+        <td class="amount">${money(x.monthly)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function worthRows(items){
+    if(items.length===0){
+      return `<tr><td class="small">No entries</td><td class="amount">—</td></tr>`;
+    }
+    return items.map(x=>`
+      <tr>
+        <td>${esc(x.desc)}</td>
+        <td class="amount">${money(x.amount)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function sum(arr, key){
+    return arr.reduce((a,x)=>a+(key?x[key]:x),0);
+  }
+
+  function ratioCard(name,value,formula,meaning){
+    return `
+      <div class="ratio-card">
+        <div class="ratio-name">${name}</div>
+        <div class="ratio-value">${value}</div>
+        <div class="formula">${formula}</div>
+        <p>${meaning}</p>
+      </div>
+    `;
+  }
+
+  function calculate(){
+    $('message').textContent='';
+    $('results').classList.add('hidden');
+
+    let cash, worth;
+    try{
+      cash=getCashEntries();
+      worth=getWorthEntries();
+    }catch(err){
+      $('message').textContent=err.message;
+      return;
+    }
+
+    if(cash.length===0 && worth.length===0){
+      $('message').textContent='Enter at least one cash-flow item or one asset/liability before calculating.';
+      return;
+    }
+
+    const income=cash.filter(x=>x.type==='income');
+    const fixed=cash.filter(x=>x.type==='fixed');
+    const variable=cash.filter(x=>x.type==='variable');
+    const savings=cash.filter(x=>x.type==='savings');
+
+    const totalIncomeAnnual=sum(income,'annual');
+    const totalIncomeMonthly=sum(income,'monthly');
+    const fixedAnnual=sum(fixed,'annual');
+    const fixedMonthly=sum(fixed,'monthly');
+    const variableAnnual=sum(variable,'annual');
+    const variableMonthly=sum(variable,'monthly');
+    const savingsAnnual=sum(savings,'annual');
+    const savingsMonthly=sum(savings,'monthly');
+
+    const totalOutAnnual=fixedAnnual+variableAnnual+savingsAnnual;
+    const totalOutMonthly=fixedMonthly+variableMonthly+savingsMonthly;
+    const netAnnual=totalIncomeAnnual-totalOutAnnual;
+    const netMonthly=totalIncomeMonthly-totalOutMonthly;
+    const livingMonthly=fixedMonthly+variableMonthly;
+    const annualStDebt=sum(cash.filter(x=>x.stdebt),'annual');
+    const annualLtDebt=sum(cash.filter(x=>x.ltdebt),'annual');
+    const annualDebtService=annualStDebt+annualLtDebt;
+
+    const monetary=worth.filter(x=>x.type==='monetary');
+    const investment=worth.filter(x=>x.type==='investment');
+    const retirement=worth.filter(x=>x.type==='retirement');
+    const household=worth.filter(x=>x.type==='household');
+    const shortL=worth.filter(x=>x.type==='short');
+    const longL=worth.filter(x=>x.type==='long');
+
+    const monetaryTotal=sum(monetary,'amount');
+    const investmentTotal=sum(investment,'amount');
+    const retirementTotal=sum(retirement,'amount');
+    const householdTotal=sum(household,'amount');
+    const shortTotal=sum(shortL,'amount');
+    const longTotal=sum(longL,'amount');
+
+    const totalAssets=monetaryTotal+investmentTotal+retirementTotal+householdTotal;
+    const totalLiabilities=shortTotal+longTotal;
+    const netWorth=totalAssets-totalLiabilities;
+
+    const monthsCovered=livingMonthly>0 ? monetaryTotal/livingMonthly : NaN;
+    const debtRatio=totalAssets>0 ? totalLiabilities/totalAssets : NaN;
+    const ltCoverage=annualLtDebt>0 ? totalIncomeAnnual/annualLtDebt : NaN;
+    const invAssetRatio=totalAssets>0 ? (investmentTotal+retirementTotal)/totalAssets : NaN;
+    const debtServiceIncomeRatio=totalIncomeAnnual>0 ? annualDebtService/totalIncomeAnnual : NaN;
+    const savingsRatio=totalIncomeAnnual>0 ? savingsAnnual/totalIncomeAnnual : NaN;
+
+    const caseName=$('caseName').value.trim();
+    const statementDate=$('statementDate').value.trim();
+
+    $('resultHeading').innerHTML = `
+      ${caseName?`<h2 style="margin-bottom:2px;">${esc(caseName)}</h2>`:''}
+      ${statementDate?`<p class="small">Statement date: ${esc(statementDate)}</p>`:''}
+    `;
+
+    $('cashStatement').innerHTML=`
+      <table>
+        <thead>
+          <tr><th>Cash Inflows</th><th class="amount">Annual</th><th class="amount">Monthly</th></tr>
+        </thead>
+        <tbody>
+          ${statementRows(income)}
+          <tr class="total-row"><td>Total Cash Inflows</td><td class="amount">${money(totalIncomeAnnual)}</td><td class="amount">${money(totalIncomeMonthly)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="3">Fixed Expenses</td></tr>
+          ${statementRows(fixed)}
+          <tr class="total-row"><td>Total Fixed Expenses</td><td class="amount">${money(fixedAnnual)}</td><td class="amount">${money(fixedMonthly)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="3">Variable Expenses</td></tr>
+          ${statementRows(variable)}
+          <tr class="total-row"><td>Total Variable Expenses</td><td class="amount">${money(variableAnnual)}</td><td class="amount">${money(variableMonthly)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="3">Savings / Investment Contributions</td></tr>
+          ${statementRows(savings)}
+          <tr class="total-row"><td>Total Savings / Investment Contributions</td><td class="amount">${money(savingsAnnual)}</td><td class="amount">${money(savingsMonthly)}</td></tr>
+
+          <tr class="grand-total"><td>Total Cash Outflows</td><td class="amount">${money(totalOutAnnual)}</td><td class="amount">${money(totalOutMonthly)}</td></tr>
+          <tr class="grand-total"><td>Net Discretionary Cash Flow</td><td class="amount">${money(netAnnual)}</td><td class="amount">${money(netMonthly)}</td></tr>
+        </tbody>
+      </table>
+    `;
+
+    $('worthStatement').innerHTML=`
+      <table>
+        <tbody>
+          <tr><td class="statement-title" colspan="2">ASSETS</td></tr>
+
+          <tr><td class="statement-sub" colspan="2">Monetary Assets</td></tr>
+          ${worthRows(monetary)}
+          <tr class="total-row"><td>Total Monetary Assets</td><td class="amount">${money(monetaryTotal)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="2">Investment Assets</td></tr>
+          ${worthRows(investment)}
+          <tr class="total-row"><td>Total Investment Assets</td><td class="amount">${money(investmentTotal)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="2">Household / Personal Property</td></tr>
+          ${worthRows(household)}
+          <tr class="total-row"><td>Total Household / Personal Property</td><td class="amount">${money(householdTotal)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="2">Retirement Assets</td></tr>
+          ${worthRows(retirement)}
+          <tr class="total-row"><td>Total Retirement Assets</td><td class="amount">${money(retirementTotal)}</td></tr>
+
+          <tr class="grand-total"><td>Total Assets</td><td class="amount">${money(totalAssets)}</td></tr>
+
+          <tr><td class="statement-title" colspan="2">LIABILITIES &amp; NET WORTH</td></tr>
+
+          <tr><td class="statement-sub" colspan="2">Short-Term Liabilities</td></tr>
+          ${worthRows(shortL)}
+          <tr class="total-row"><td>Total Short-Term Liabilities</td><td class="amount">${money(shortTotal)}</td></tr>
+
+          <tr><td class="statement-sub" colspan="2">Long-Term Liabilities</td></tr>
+          ${worthRows(longL)}
+          <tr class="total-row"><td>Total Long-Term Liabilities</td><td class="amount">${money(longTotal)}</td></tr>
+
+          <tr class="grand-total"><td>Total Liabilities</td><td class="amount">${money(totalLiabilities)}</td></tr>
+          <tr class="grand-total"><td>Net Worth</td><td class="amount">${money(netWorth)}</td></tr>
+        </tbody>
+      </table>
+    `;
+
+    const ratioSelections = {
+      months: $('selMonths').checked,
+      debt: $('selDebt').checked,
+      lt: $('selLtCoverage').checked,
+      invest: $('selInvest').checked,
+      debtService: $('selDebtService').checked,
+      savings: $('selSavings').checked
+    };
+
+    const summaryParts = [];
+    if(ratioSelections.months) summaryParts.push(`
+      <div class="metric">
+        <div class="k">Months of Living Expenses Covered</div>
+        <div class="v">${ratioNum(monthsCovered)}</div>
+      </div>`);
+    if(ratioSelections.debt) summaryParts.push(`
+      <div class="metric">
+        <div class="k">Debt Ratio</div>
+        <div class="v">${percent(debtRatio)}</div>
+      </div>`);
+    if(ratioSelections.lt) summaryParts.push(`
+      <div class="metric">
+        <div class="k">Long-Term Debt Coverage</div>
+        <div class="v">${ratioNum(ltCoverage)}</div>
+      </div>`);
+    if(ratioSelections.invest) summaryParts.push(`
+      <div class="metric">
+        <div class="k">Investment Assets / Total Assets</div>
+        <div class="v">${percent(invAssetRatio)}</div>
+      </div>`);
+    if(ratioSelections.debtService) summaryParts.push(`
+      <div class="metric">
+        <div class="k">Debt Service to Income</div>
+        <div class="v">${percent(debtServiceIncomeRatio)}</div>
+      </div>`);
+    if(ratioSelections.savings) summaryParts.push(`
+      <div class="metric">
+        <div class="k">Savings Ratio</div>
+        <div class="v">${percent(savingsRatio)}</div>
+      </div>`);
+
+    $('ratioSummary').innerHTML = summaryParts.length
+      ? summaryParts.join('')
+      : `<div class="small">No ratios selected.</div>`;
+
+    const ratioDetailParts = [];
+
+    if(ratioSelections.months){
+      ratioDetailParts.push(
+        ratioCard(
+          'Months of Living Expenses Covered',
+          ratioNum(monthsCovered),
+          `${money(monetaryTotal)} monetary assets ÷ ${money(livingMonthly)} monthly living expenses`,
+          Number.isFinite(monthsCovered)
+            ? `Monetary assets could cover approximately ${monthsCovered.toFixed(2)} months of the fixed and variable living expenses entered.`
+            : 'This ratio requires both monetary assets and monthly living expenses.'
+        )
+      );
+    }
+
+    if(ratioSelections.debt){
+      ratioDetailParts.push(
+        ratioCard(
+          'Debt Ratio',
+          percent(debtRatio),
+          `${money(totalLiabilities)} total liabilities ÷ ${money(totalAssets)} total assets`,
+          Number.isFinite(debtRatio)
+            ? `Liabilities equal approximately ${(debtRatio*100).toFixed(2)}% of total assets.`
+            : 'This ratio requires total assets greater than zero.'
+        )
+      );
+    }
+
+    if(ratioSelections.lt){
+      ratioDetailParts.push(
+        ratioCard(
+          'Long-Term Debt Coverage',
+          ratioNum(ltCoverage),
+          `${money(totalIncomeAnnual)} annual income ÷ ${money(annualLtDebt)} annual long-term debt payments`,
+          Number.isFinite(ltCoverage)
+            ? `Annual income is approximately ${ltCoverage.toFixed(2)} times the annual long-term debt payments identified in the cash-flow entries.`
+            : 'This ratio requires at least one expense to be identified as a long-term debt payment.'
+        )
+      );
+    }
+
+    if(ratioSelections.invest){
+      ratioDetailParts.push(
+        ratioCard(
+          'Investment Assets to Total Assets',
+          percent(invAssetRatio),
+          `${money(investmentTotal+retirementTotal)} investment + retirement assets ÷ ${money(totalAssets)} total assets`,
+          Number.isFinite(invAssetRatio)
+            ? `Investment and retirement assets represent approximately ${(invAssetRatio*100).toFixed(2)}% of total assets.`
+            : 'This ratio requires total assets greater than zero.'
+        )
+      );
+    }
+
+    if(ratioSelections.debtService){
+      ratioDetailParts.push(
+        ratioCard(
+          'Debt Service to Income Ratio',
+          percent(debtServiceIncomeRatio),
+          `${money(annualDebtService)} annual short-term + long-term debt payments ÷ ${money(totalIncomeAnnual)} annual income`,
+          Number.isFinite(debtServiceIncomeRatio)
+            ? `Approximately ${(debtServiceIncomeRatio*100).toFixed(2)}% of annual income is committed to the debt payments identified in the cash-flow entries.`
+            : 'This ratio requires annual income greater than zero.'
+        )
+      );
+    }
+
+    if(ratioSelections.savings){
+      ratioDetailParts.push(
+        ratioCard(
+          'Savings Ratio',
+          percent(savingsRatio),
+          `${money(savingsAnnual)} annual savings / investment contributions ÷ ${money(totalIncomeAnnual)} annual income`,
+          Number.isFinite(savingsRatio)
+            ? `Approximately ${(savingsRatio*100).toFixed(2)}% of annual income is being directed to savings and investment contributions.`
+            : 'This ratio requires annual income greater than zero.'
+        )
+      );
+    }
+
+    $('ratioDetails').innerHTML = ratioDetailParts.join('');
+
+
+    const lines=[];
+    lines.push('APPLIED PERSONAL FINANCE');
+    lines.push('FINANCIAL STATEMENTS & RATIOS SUMMARY');
+    if(caseName) lines.push(`Case / Household: ${caseName}`);
+    if(statementDate) lines.push(`Statement Date: ${statementDate}`);
+    lines.push('');
+    lines.push('STATEMENT OF CASH FLOWS');
+    lines.push(`Total Annual Cash Inflows: ${money(totalIncomeAnnual)}`);
+    lines.push(`Total Annual Fixed Expenses: ${money(fixedAnnual)}`);
+    lines.push(`Total Annual Variable Expenses: ${money(variableAnnual)}`);
+    lines.push(`Total Annual Savings / Investment Contributions: ${money(savingsAnnual)}`);
+    lines.push(`Total Annual Cash Outflows: ${money(totalOutAnnual)}`);
+    lines.push(`Annual Short-Term Debt Payments Identified: ${money(annualStDebt)}`);
+    lines.push(`Annual Long-Term Debt Payments Identified: ${money(annualLtDebt)}`);
+    lines.push(`Net Discretionary Cash Flow: ${money(netAnnual)} annually; ${money(netMonthly)} monthly`);
+    lines.push('');
+    lines.push('STATEMENT OF NET WORTH');
+    lines.push(`Total Monetary Assets: ${money(monetaryTotal)}`);
+    lines.push(`Total Investment Assets: ${money(investmentTotal)}`);
+    lines.push(`Total Household / Personal Property: ${money(householdTotal)}`);
+    lines.push(`Total Retirement Assets: ${money(retirementTotal)}`);
+    lines.push(`Total Assets: ${money(totalAssets)}`);
+    lines.push(`Total Short-Term Liabilities: ${money(shortTotal)}`);
+    lines.push(`Total Long-Term Liabilities: ${money(longTotal)}`);
+    lines.push(`Total Liabilities: ${money(totalLiabilities)}`);
+    lines.push(`Net Worth: ${money(netWorth)}`);
+    lines.push('');
+    lines.push('FINANCIAL RATIOS');
+    if(ratioSelections.months) lines.push(`Months of Living Expenses Covered: ${ratioNum(monthsCovered)}`);
+    if(ratioSelections.debt) lines.push(`Debt Ratio: ${percent(debtRatio)}`);
+    if(ratioSelections.lt) lines.push(`Long-Term Debt Coverage: ${ratioNum(ltCoverage)}`);
+    if(ratioSelections.invest) lines.push(`Investment Assets to Total Assets: ${percent(invAssetRatio)}`);
+    if(ratioSelections.debtService) lines.push(`Debt Service to Income Ratio: ${percent(debtServiceIncomeRatio)}`);
+    if(ratioSelections.savings) lines.push(`Savings Ratio: ${percent(savingsRatio)}`);
+    if(!Object.values(ratioSelections).some(Boolean)) lines.push('No ratios selected.');
+
+    $('copyText').value=lines.join('\n');
+    $('results').classList.remove('hidden');
+    $('results').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function clearAll(){
+    $('cashBody').innerHTML='';
+    $('worthBody').innerHTML='';
+    $('caseName').value='';
+    $('statementDate').value='';
+    $('message').textContent='';
+    $('copyStatus').textContent='';
+    $('results').classList.add('hidden');
+    document.querySelectorAll('.ratio-select').forEach(x=>x.checked=true);
+
+    for(let i=0;i<4;i++) addCashRow();
+    for(let i=0;i<4;i++) addWorthRow();
+
+    document.querySelector('.cash-desc')?.focus();
+  }
+
+
+  $('loadJessica').addEventListener('click',()=>{
+    $('cashBody').innerHTML=''; $('worthBody').innerHTML='';
+    const cash=[
+      {desc:'Salary',amount:60000,freq:'annual',type:'income'},
+      {desc:'Consulting Income',amount:2000,freq:'annual',type:'income'},
+      {desc:'Insurance',amount:3000,freq:'annual',type:'fixed'},
+      {desc:'Student Loan Payment',amount:6000,freq:'annual',type:'fixed',ltdebt:true},
+      {desc:'Car Payments',amount:5100,freq:'annual',type:'fixed',ltdebt:true},
+      {desc:'Credit Card Consolidation Loan Payment',amount:600,freq:'annual',type:'fixed',stdebt:true},
+      {desc:'Mortgage Payments',amount:22000,freq:'annual',type:'fixed',ltdebt:true},
+      {desc:'Annual Savings',amount:2500,freq:'annual',type:'savings'},
+      {desc:'Utilities',amount:2300,freq:'annual',type:'variable'},
+      {desc:'Amazon Purchases',amount:2500,freq:'annual',type:'variable'},
+      {desc:'Fuel',amount:1000,freq:'annual',type:'variable'},
+      {desc:'Groceries',amount:2400,freq:'annual',type:'variable'},
+      {desc:'Entertainment',amount:1200,freq:'annual',type:'variable'}
+    ]; cash.forEach(addCashRow);
+    const worth=[
+      {desc:'Savings Account',amount:5000,type:'monetary'}, {desc:'Money Market Account',amount:15000,type:'monetary'}, {desc:'Checking Account',amount:22000,type:'monetary'},
+      {desc:'Mutual Fund Account',amount:1000,type:'investment'}, {desc:'Employer Plan',amount:10000,type:'retirement'}, {desc:'Roth IRA',amount:8500,type:'retirement'},
+      {desc:'Car',amount:8000,type:'household'}, {desc:'Furniture Value',amount:2300,type:'household'}, {desc:'Home Value',amount:160000,type:'household'}, {desc:'Stamp Collection',amount:500,type:'household'},
+      {desc:'Past-Due Speeding Ticket',amount:350,type:'short'}, {desc:'Credit Card Balance',amount:1000,type:'short'},
+      {desc:'Mortgage Balance',amount:138000,type:'long'}, {desc:'Student Loan Balance',amount:20000,type:'long'}, {desc:'Car Loan Balance',amount:4000,type:'long'}
+    ]; worth.forEach(addWorthRow);
+    $('caseName').value='Jessica - LO3 Project'; $('statementDate').value='December 31';
+    document.querySelectorAll('.ratio-select').forEach(x=>x.checked=true);
+    $('projectMode').scrollIntoView({behavior:'smooth'});
+  });
+
+  $('addCash').addEventListener('click',()=>addCashRow());
+  $('addWorth').addEventListener('click',()=>addWorthRow());
+  $('calc').addEventListener('click',calculate);
+  $('clear').addEventListener('click',clearAll);
+
+  $('selectAllRatios').addEventListener('click',()=>{
+    document.querySelectorAll('.ratio-select').forEach(x=>x.checked=true);
+  });
+
+  $('clearRatios').addEventListener('click',()=>{
+    document.querySelectorAll('.ratio-select').forEach(x=>x.checked=false);
+  });
+
+  $('copyBtn').addEventListener('click',async()=>{
+    try{
+      await navigator.clipboard.writeText($('copyText').value);
+      $('copyStatus').textContent='Results copied to the clipboard.';
+    }catch{
+      $('copyText').select();
+      document.execCommand('copy');
+      $('copyStatus').textContent='Results copied to the clipboard.';
+    }
+  });
+
+  $('printBtn').addEventListener('click',()=>window.print());
+
+  for(let i=0;i<4;i++) addCashRow();
+  for(let i=0;i<4;i++) addWorthRow();
+})();
+</script>
+
+</body>
+</html>

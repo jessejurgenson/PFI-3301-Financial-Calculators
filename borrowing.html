@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applied Personal Finance Borrowing Decision Calculator</title>
+<meta name="description" content="Educational borrowing decision calculator for comparing multiple borrowing options, costs, payments, fees, and rate structures.">
+<style>
+:root{--bg:#fff;--text:#1f2937;--muted:#6b7280;--border:#d1d5db;--panel:#f8fafc;--accent:#b91c1c;--accent-dark:#991b1b;--focus:#2563eb;--error:#b91c1c;--ok:#166534}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+main{max-width:1120px;margin:0 auto;padding:16px}
+header{padding:8px 0 16px;border-bottom:4px solid var(--accent);margin-bottom:20px}
+h1{font-size:clamp(1.7rem,4vw,2.35rem);margin:0 0 4px}
+h2{font-size:1.25rem;margin:0 0 12px}
+h3{font-size:1.05rem;margin:18px 0 8px}
+p{margin:8px 0}
+ul,ol{padding-left:1.3rem}
+li{margin:.45rem 0}
+.subtitle{color:var(--muted);margin:0}
+.card{border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0;background:#fff}
+.notice{background:var(--panel);border-left:4px solid var(--accent);padding:12px;border-radius:8px}
+.grid{display:grid;gap:14px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+label{display:block;font-weight:700;font-size:.95rem}
+.help{font-weight:400;color:var(--muted);font-size:.86rem;margin-top:4px}
+input,select,button{font:inherit;border-radius:8px;border:1px solid var(--border)}
+input,select{width:100%;min-height:44px;padding:9px 10px;background:#fff;color:var(--text);margin-top:5px}
+input:focus,select:focus,button:focus,summary:focus{outline:3px solid rgba(37,99,235,.25);outline-offset:2px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{width:auto;min-height:44px;padding:9px 16px;font-weight:700;cursor:pointer}
+.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.primary:hover{background:var(--accent-dark)}
+.secondary{background:#fff;color:var(--text)}.danger-lite{background:#fff;color:var(--error);border-color:#f3b5b5}
+.error{color:var(--error);font-weight:700;margin-top:12px}.hidden{display:none!important}.small{font-size:.88rem;color:var(--muted)}
+.loan-card{border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px;background:#fff}
+.loan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.loan-head h3{margin:0}
+.term-wrap{display:grid;grid-template-columns:1fr 145px;gap:8px}
+.result-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.metric{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff}.metric .k{font-size:.78rem;color:var(--muted)}.metric .v{font-weight:800;font-size:1.1rem;margin-top:3px;word-break:break-word}
+.compare-wrap{overflow-x:auto;margin-top:12px}table{width:100%;border-collapse:collapse;min-width:820px}
+th,td{border-bottom:1px solid var(--border);padding:9px 8px;text-align:left;vertical-align:middle}th{background:var(--panel);font-size:.86rem}
+.amount{text-align:right;white-space:nowrap}.best{font-weight:800;color:var(--ok)}.diff{font-size:.79rem;color:var(--muted);margin-top:2px}
+details{margin-top:10px;border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff}summary{cursor:pointer;font-weight:700;font-size:1rem}.details-content{margin-top:12px}
+.badge{display:inline-block;padding:2px 7px;border-radius:999px;background:#f3f4f6;font-size:.75rem;font-weight:700;color:#374151}
+footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:20px}
+@media(max-width:850px){.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){main{padding:12px}.grid-2,.grid-3,.result-grid{grid-template-columns:1fr}.actions button{width:100%}.loan-head{align-items:flex-start}.term-wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="badge">Applied Personal Finance</div>
+<h1>Borrowing Decision Calculator</h1>
+<p class="subtitle">Compare Payments • Interest • Fees • Total Borrowing Cost</p>
+<p class="help"><strong>Instructional release:</strong> Version 1.1 • November 2026</p>
+</header>
+
+<div class="notice">
+<strong>Purpose:</strong> Use this calculator to compare multiple borrowing or purchase-financing options using the same underlying purchase price or borrowing need.
+It is designed for examples involving vehicle loans, mortgages, student loans, personal loans, and similar installment loans.
+For purchases such as vehicles or homes, the tool can account for down payments, cash rebates, upfront fees, and financed fees before calculating the loan.
+Each option can be modeled as either a fixed-rate loan or a simplified variable-rate loan with one assumed future rate change.
+The calculator performs the arithmetic, but you are responsible for comparing the terms and deciding which differences matter.
+</div>
+
+<div class="notice">
+<strong>PFI 3301 project use:</strong> For the vehicle financing comparison, enter the negotiated vehicle price as the shared starting amount. Enter the down payment and any cash rebate separately for each option. The calculator will show both the financing cost and the total purchase/cash cost so you can compare a low-rate offer with a rebate offer correctly.
+</div>
+
+<section class="card">
+<h2>Purchase Price or Borrowing Need</h2>
+<div class="grid grid-2">
+<label>Purchase Price / Borrowing Need
+<input id="baseBorrow" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Example: 25000">
+<span class="help">Enter the purchase price or original amount needed before down payments, rebates, and lender fees are applied.</span>
+</label>
+<label>Borrowing Purpose / Problem Title
+<input id="caseLabel" type="text" placeholder="Example: Compare financing options for a vehicle purchase">
+<span class="help">Optional. Use this to name the borrowing decision or class problem. It will appear as the heading above your comparison results.</span>
+</label>
+</div>
+</section>
+
+<section class="card">
+<h2>Loan Options</h2>
+<p class="small">Add two or more loan options. Each option may have a different rate structure, rate, term, down payment, cash rebate, and fee structure. Enter rates as percentages, such as <strong>6.5</strong> for 6.5%.</p>
+<div class="notice" style="margin-top:12px;">
+<strong>Fees:</strong> <strong>Upfront fees</strong> are paid separately and are not added to the loan balance.
+<strong>Financed fees</strong> are added to the amount borrowed and therefore may also generate interest.
+If a quoted APR already incorporates certain fees, adding those same fees again may double-count them.
+</div>
+<div id="loanOptions"></div>
+<div class="actions">
+<button id="addLoan" class="secondary" type="button">+ Add Loan Option</button>
+<button id="calculate" class="primary" type="button">Compare Loan Options</button>
+<button id="clearAll" class="secondary" type="button">Clear All</button>
+</div>
+<div id="message" class="error" role="alert" aria-live="polite"></div>
+</section>
+
+<section id="results" class="card hidden" aria-live="polite">
+<div id="resultLabel"></div>
+<h2>Comparison Summary</h2>
+<div class="compare-wrap">
+<table>
+<thead><tr>
+<th>Loan Option</th>
+<th class="amount">Down Payment</th>
+<th class="amount">Cash Rebate</th>
+<th class="amount">Amount Financed</th>
+<th class="amount">Monthly Payment</th>
+<th class="amount">Total Interest</th>
+<th class="amount">Total Fees</th>
+<th class="amount">Total Financing Cost</th>
+<th class="amount">Total Purchase / Cash Cost</th>
+</tr></thead>
+<tbody id="comparisonBody"></tbody>
+</table>
+</div>
+<div class="notice" style="margin-top:16px;">
+<strong>How to read the table:</strong> A lower monthly payment does not necessarily mean a lower-cost loan.
+Longer terms often reduce the required payment while increasing total interest and financing cost. For purchase decisions, compare total purchase/cash cost too.
+</div>
+<h2 style="margin-top:24px;">Cost Differences</h2>
+<div id="differenceCards" class="result-grid"></div>
+<h2 style="margin-top:24px;">Loan-by-Loan Details</h2>
+<div id="detailCards"></div>
+</section>
+
+<section class="card">
+<details>
+<summary>How to Use This Calculator</summary>
+<div class="details-content">
+<h3>1. Enter the Purchase Price or Borrowing Need</h3>
+<p>For a purchase comparison, enter the negotiated purchase price before any down payment or cash rebate. For a general loan, enter the amount you need before lender fees are added. Use the same starting amount for every option so the comparison is meaningful.</p>
+<p>
+You may also enter a <strong>Borrowing Purpose / Problem Title</strong>, such as
+<strong>Compare financing options for a vehicle purchase</strong> or
+<strong>Mortgage options for a $250,000 home purchase</strong>.
+This optional label will appear as the heading above the comparison results so you can easily identify the scenario being analyzed.
+</p>
+<h3>2. Add the Loan Options</h3>
+<p>Give each option a descriptive name and choose the type of loan. Loan type is used as a label only. The underlying calculation is the same fixed-rate installment-loan calculation.</p>
+<h3>3. Choose Fixed or Variable Rate</h3>
+<p>
+For a <strong>Fixed Rate</strong>, enter the annual rate that remains constant for the full term.
+For a <strong>Variable Rate</strong>, enter the initial annual rate, when you want to assume the rate changes,
+and the new annual rate you want to model after that change.
+</p>
+<p>
+The variable-rate option is a simplified classroom model with <strong>one assumed rate change</strong>.
+It is useful for illustrating how future rate changes can affect payments and total borrowing cost.
+</p>
+<h3>4. Enter the Loan Term</h3>
+<p>Enter the length of the loan in months or years. The calculator converts years to months and assumes monthly payments.</p>
+<h3>5. Enter Down Payments and Cash Rebates When Applicable</h3>
+<p>For loans such as vehicle loans or mortgages, enter any cash down payment made before financing. If an option includes a manufacturer or dealer cash rebate, enter it separately. Both reduce the amount that must be financed.</p>
+<p>If a loan does not involve a down payment or rebate, enter <strong>0</strong>.</p>
+<h3>6. Enter Any Fees</h3>
+<p>Use <strong>Upfront Fees</strong> for costs paid separately at the beginning of the loan. Use <strong>Financed Fees</strong> for fees that are added to the loan balance.</p>
+<h3>7. Compare More Than the Monthly Payment</h3>
+<p>Review the monthly payment, total interest, total fees, total financing cost, and total purchase/cash cost. The option with the lowest payment may not be the option with the lowest overall cost.</p>
+</div>
+</details>
+</section>
+
+<section class="card">
+<details>
+<summary>Understanding the Comparison Measures</summary>
+<div class="details-content">
+<h3>Down Payment</h3>
+<p>
+A <strong>down payment</strong> is cash paid toward the purchase or borrowing need before the loan is calculated.
+It reduces the amount that must be financed but increases the amount of cash paid at the beginning.
+</p>
+
+<h3>Amount Financed</h3>
+<p><strong>Amount Financed = Purchase Price / Borrowing Need − Down Payment − Cash Rebate + Financed Fees</strong></p>
+<p>This is the balance used to calculate the scheduled payment in this tool.</p>
+<h3>Monthly Payment</h3>
+<p>The required monthly payment for a fully amortizing fixed-rate installment loan. It is based on the amount financed, monthly interest rate, and number of monthly payments.</p>
+<h3>Total Interest</h3>
+<p>The total scheduled payments minus the amount financed. This represents the interest paid over the full scheduled term if all payments are made as assumed.</p>
+<h3>Total Fees</h3>
+<p>The sum of upfront fees and financed fees entered for that loan option.</p>
+<h3>Total Financing Cost</h3>
+<p><strong>Total Financing Cost = Total Interest + Upfront Fees + Financed Fees</strong></p>
+<p>This isolates the extra cost of financing the purchase or borrowing need. It does not include repayment of principal or the down payment.</p>
+<h3>Total Purchase / Cash Cost</h3>
+<p><strong>Total Purchase / Cash Cost = Down Payment + Scheduled Loan Payments + Upfront Fees</strong></p>
+<p>For purchase comparisons, this represents the total cash paid for the purchase over time under the assumptions entered. A cash rebate lowers the amount financed and therefore lowers this total indirectly.</p>
+<h3>Fixed Rate Versus Variable Rate</h3>
+<p>
+A <strong>fixed-rate loan</strong> uses the same interest rate for the entire modeled term, so the scheduled principal-and-interest payment remains constant.
+A <strong>variable-rate loan</strong> can change over time. In this calculator, you specify one assumed future rate change.
+</p>
+<p>
+When the rate changes, the calculator estimates the remaining loan balance and recalculates the payment needed to amortize that balance over the remaining term.
+This allows you to compare how a plausible future rate increase or decrease could affect both the payment and the total cost.
+</p>
+
+<h3>Why Term Matters</h3>
+<p>Extending the term generally lowers the monthly payment because repayment is spread across more months. However, interest is usually paid for a longer period, which can substantially increase total cost.</p>
+</div>
+</details>
+</section>
+
+<section class="card">
+<details>
+<summary>Calculation Method &amp; Assumptions</summary>
+<div class="details-content">
+<h3>Monthly Payment Formula</h3>
+<p>For a positive monthly interest rate, the calculator uses the standard fully amortizing installment-loan payment relationship:</p>
+<p style="text-align:center;font-weight:700;">Payment = P × r ÷ [1 − (1 + r)<sup>−n</sup>]</p>
+<ul>
+<li><strong>P</strong> = amount financed</li>
+<li><strong>r</strong> = monthly interest rate</li>
+<li><strong>n</strong> = number of monthly payments</li>
+</ul>
+<p>When the stated annual interest rate is zero, payment equals amount financed divided by the number of payments.</p>
+<h3>Interest Convention</h3>
+<p>
+The calculator assumes each stated annual interest rate is divided by 12 to determine the monthly rate.
+For fixed-rate loans, that rate is used for the full term.
+For variable-rate loans, the calculator uses the initial rate until the selected reset month, calculates the remaining principal balance,
+then recalculates the payment using the assumed new rate for the remaining months.
+</p>
+<p>
+The variable-rate feature is deliberately simplified. It models only one rate change and does not model rate indexes, margins,
+periodic or lifetime caps, floors, teaser periods, multiple resets, daily simple interest, negative amortization,
+interest-only periods, or graduated payments.
+</p>
+<h3>Mortgage Costs</h3>
+<p>Property taxes, homeowners insurance, mortgage insurance, HOA charges, maintenance, and other housing expenses are not included unless they are entered as loan fees. Those costs are important to affordability but are not part of the installment-loan payment calculation used here.</p>
+<h3>Student Loans</h3>
+<p>The calculator assumes repayment begins immediately under a standard fixed-payment schedule. It does not model deferment, grace periods, income-driven repayment, interest subsidies, capitalization events, forgiveness, or changing payment plans.</p>
+</div>
+</details>
+</section>
+
+<section class="card">
+<details>
+<summary>Important Disclosures &amp; Limitations</summary>
+<div class="details-content">
+<ul>
+<li><strong>Classroom and educational use:</strong> This tool is intended for instructional practice and course-related learning. It is not a substitute for professional judgment or personalized advice.</li>
+<li><strong>Independent instructional tool:</strong> This calculator is an individually developed instructional resource and is not an official Texas Tech University product. It is not affiliated with, endorsed by, operated by, or maintained by Texas Tech University.</li>
+<li><strong>No lending or financial advice:</strong> Results are illustrative and should not be interpreted as a recommendation to borrow, refinance, select a lender, or enter into any particular transaction.</li>
+<li><strong>Loan disclosures control:</strong> Actual loan products may use different interest conventions, fees, payment schedules, prepayment rules, insurance requirements, taxes, or other terms. Always review the lender's official disclosures and contract.</li>
+<li><strong>Variable-rate scenarios:</strong> The future rate entered in this calculator is an assumption, not a prediction. Actual variable-rate loans may reset multiple times and may use an index, margin, caps, floors, and other contract provisions that are not modeled here.</li>
+<li><strong>APR and fees:</strong> A lender's disclosed APR may incorporate certain finance charges. If you enter an APR and then separately enter the same fees used to calculate that APR, the comparison may double-count those costs. Follow the instructions for the problem being analyzed.</li>
+<li><strong>Credit and eligibility:</strong> The calculator does not estimate approval likelihood, credit-score effects, lender underwriting, collateral requirements, or available market rates.</li>
+<li><strong>Software limitation:</strong> Software can contain errors. Recheck all important inputs and independently verify results that appear unreasonable.</li>
+<li><strong>Privacy:</strong> Calculations occur locally in the browser. This page does not require an account and does not intentionally save or transmit the values entered. Do not enter sensitive personal information.</li>
+<li><strong>Course use:</strong> Your instructor may specify particular assumptions, formulas, rounding rules, or required methods. Course instructions control when they differ from this tool's defaults.</li>
+</ul>
+</div>
+</details>
+</section>
+
+<footer>
+<p><strong>Applied Personal Finance Borrowing Decision Calculator • Version 1.0 • September 2026</strong></p>
+<p>Individually developed instructional resource. Educational use only. Not lending, financial, investment, tax, accounting, or legal advice.</p>
+</footer>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  let loanCounter = 0;
+  const MAX_LOANS = 6;
+  const loanTypes = ['Vehicle Loan','Mortgage','Student Loan','Personal Loan','Other'];
+
+  function money(x){
+    return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(Number.isFinite(x)?x:0);
+  }
+  function pct(x){ return `${x.toFixed(3)}%`; }
+  function esc(s){
+    return String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
+  }
+  function payment(principal, annualRatePct, months){
+    if(months <= 0) return NaN;
+    const r = annualRatePct / 100 / 12;
+    if(Math.abs(r) < 1e-14) return principal / months;
+    return principal * r / (1 - Math.pow(1+r,-months));
+  }
+
+  function balanceAfterPayments(principal, annualRatePct, paymentAmount, paymentsMade){
+    if(paymentsMade <= 0) return principal;
+    const r = annualRatePct / 100 / 12;
+    if(Math.abs(r) < 1e-14){
+      return Math.max(0, principal - paymentAmount * paymentsMade);
+    }
+    const growth = Math.pow(1+r, paymentsMade);
+    return Math.max(0, principal * growth - paymentAmount * ((growth - 1) / r));
+  }
+
+  function calculateVariableLoan(principal, initialRate, newRate, totalMonths, resetMonth){
+    const firstPayment = payment(principal, initialRate, totalMonths);
+    const monthsAtInitial = Math.min(resetMonth, totalMonths);
+
+    if(resetMonth >= totalMonths){
+      const totalScheduledPayments = firstPayment * totalMonths;
+      return {
+        initialPayment:firstPayment,
+        resetPayment:firstPayment,
+        monthsAtInitial:totalMonths,
+        remainingMonths:0,
+        totalScheduledPayments
+      };
+    }
+
+    const remainingBalance = balanceAfterPayments(principal, initialRate, firstPayment, monthsAtInitial);
+    const remainingMonths = totalMonths - monthsAtInitial;
+    const resetPayment = payment(remainingBalance, newRate, remainingMonths);
+    const totalScheduledPayments = firstPayment * monthsAtInitial + resetPayment * remainingMonths;
+
+    return {
+      initialPayment:firstPayment,
+      resetPayment,
+      monthsAtInitial,
+      remainingMonths,
+      remainingBalance,
+      totalScheduledPayments
+    };
+  }
+
+  function addLoan(values={}){
+    if(document.querySelectorAll('.loan-card').length >= MAX_LOANS){
+      $('message').textContent=`You can compare up to ${MAX_LOANS} loan options at one time.`;
+      return;
+    }
+    loanCounter += 1;
+    const card = document.createElement('div');
+    card.className='loan-card';
+    card.innerHTML=`
+      <div class="loan-head">
+        <h3>Loan Option ${loanCounter}</h3>
+        <button class="danger-lite remove-loan" type="button">Remove</button>
+      </div>
+      <div class="grid grid-3">
+        <label>Option Name
+          <input class="loan-name" type="text" placeholder="Example: Credit Union 60-month" value="${esc(values.name||'')}">
+        </label>
+        <label>Loan Type
+          <select class="loan-type">${loanTypes.map(t=>`<option ${values.type===t?'selected':''}>${t}</option>`).join('')}</select>
+        </label>
+        <label>Rate Structure
+          <select class="loan-rate-type">
+            <option value="fixed" ${values.rateType==='variable'?'':'selected'}>Fixed Rate</option>
+            <option value="variable" ${values.rateType==='variable'?'selected':''}>Variable Rate</option>
+          </select>
+          <span class="help">Choose whether the interest rate stays constant or is expected to change.</span>
+        </label>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:12px;">
+        <label>Initial Annual Interest Rate (%)
+          <input class="loan-rate" type="number" min="0" step="0.001" inputmode="decimal" placeholder="Example: 6.5" value="${values.rate ?? ''}">
+        </label>
+
+        <div class="variable-fields ${values.rateType==='variable'?'':'hidden'}">
+          <label>Rate Changes After
+            <div class="term-wrap">
+              <input class="loan-reset-after" type="number" min="1" step="1" inputmode="decimal" placeholder="Example: 36" value="${values.resetAfter ?? ''}">
+              <select class="loan-reset-unit">
+                <option value="months" ${values.resetUnit==='years'?'':'selected'}>Months</option>
+                <option value="years" ${values.resetUnit==='years'?'selected':''}>Years</option>
+              </select>
+            </div>
+            <span class="help">When the assumed new rate begins.</span>
+          </label>
+        </div>
+
+        <div class="variable-fields ${values.rateType==='variable'?'':'hidden'}">
+          <label>Assumed New Annual Rate (%)
+            <input class="loan-new-rate" type="number" min="0" step="0.001" inputmode="decimal" placeholder="Example: 8.0" value="${values.newRate ?? ''}">
+            <span class="help">Enter the rate you want to model after the reset.</span>
+          </label>
+        </div>
+      </div>
+      <div class="grid grid-3" style="margin-top:12px;">
+        <label>Loan Term
+          <div class="term-wrap">
+            <input class="loan-term" type="number" min="1" step="1" inputmode="decimal" placeholder="Example: 60" value="${values.term ?? ''}">
+            <select class="loan-term-unit">
+              <option value="months" ${values.unit==='months'?'selected':''}>Months</option>
+              <option value="years" ${values.unit==='years'?'selected':''}>Years</option>
+            </select>
+          </div>
+        </label>
+        <label>Down Payment
+          <input class="loan-down" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.down ?? '0'}">
+          <span class="help">Cash you pay toward the purchase before financing.</span>
+        </label>
+        <label>Cash Rebate
+          <input class="loan-rebate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.rebate ?? '0'}">
+          <span class="help">Manufacturer or dealer rebate that reduces the amount financed.</span>
+        </label>
+      </div>
+      <div class="grid grid-3" style="margin-top:12px;">
+        <label>Upfront Fees
+          <input class="loan-upfront" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.upfront ?? '0'}">
+          <span class="help">Paid separately, not added to balance.</span>
+        </label>
+      </div>
+      <div class="grid grid-3" style="margin-top:12px;">
+        <label>Financed Fees
+          <input class="loan-financed" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" value="${values.financed ?? '0'}">
+          <span class="help">Added to the loan balance.</span>
+        </label>
+      </div>`;
+    const rateTypeSelect = card.querySelector('.loan-rate-type');
+    const variableFields = [...card.querySelectorAll('.variable-fields')];
+    function updateVariableVisibility(){
+      const isVariable = rateTypeSelect.value === 'variable';
+      variableFields.forEach(el => el.classList.toggle('hidden', !isVariable));
+    }
+    rateTypeSelect.addEventListener('change', updateVariableVisibility);
+    updateVariableVisibility();
+
+    card.querySelector('.remove-loan').addEventListener('click',()=>{
+      if(document.querySelectorAll('.loan-card').length <= 2){
+        $('message').textContent='Keep at least two loan options for a comparison.';
+        return;
+      }
+      card.remove();
+      $('results').classList.add('hidden');
+      $('message').textContent='';
+    });
+    $('loanOptions').appendChild(card);
+  }
+
+  function readLoans(baseBorrow){
+    const loans=[];
+    const cards=[...document.querySelectorAll('.loan-card')];
+    for(let i=0;i<cards.length;i++){
+      const c=cards[i];
+      const name=c.querySelector('.loan-name').value.trim() || `Loan Option ${i+1}`;
+      const type=c.querySelector('.loan-type').value;
+      const rateType=c.querySelector('.loan-rate-type').value;
+      const rate=parseFloat(c.querySelector('.loan-rate').value);
+      const resetAfter=parseFloat(c.querySelector('.loan-reset-after')?.value || '');
+      const resetUnit=c.querySelector('.loan-reset-unit')?.value || 'months';
+      const newRate=parseFloat(c.querySelector('.loan-new-rate')?.value || '');
+      const term=parseFloat(c.querySelector('.loan-term').value);
+      const unit=c.querySelector('.loan-term-unit').value;
+      const down=parseFloat(c.querySelector('.loan-down').value || '0');
+      const rebate=parseFloat(c.querySelector('.loan-rebate').value || '0');
+      const upfront=parseFloat(c.querySelector('.loan-upfront').value || '0');
+      const financed=parseFloat(c.querySelector('.loan-financed').value || '0');
+
+      if(!Number.isFinite(rate) || rate < 0) throw new Error(`Enter a valid nonnegative initial interest rate for ${name}.`);
+      if(rateType==='variable'){
+        if(!Number.isFinite(resetAfter) || resetAfter <= 0) throw new Error(`Enter when the variable rate changes for ${name}.`);
+        if(!Number.isFinite(newRate) || newRate < 0) throw new Error(`Enter a valid assumed new rate for ${name}.`);
+      }
+      if(!Number.isFinite(term) || term <= 0) throw new Error(`Enter a valid loan term for ${name}.`);
+      if(!Number.isFinite(down) || down < 0) throw new Error(`Down payment for ${name} must be zero or positive.`);
+      if(!Number.isFinite(rebate) || rebate < 0) throw new Error(`Cash rebate for ${name} must be zero or positive.`);
+      if(down + rebate > baseBorrow) throw new Error(`Down payment plus cash rebate for ${name} cannot exceed the purchase price / borrowing need.`);
+      if(!Number.isFinite(upfront) || upfront < 0 || !Number.isFinite(financed) || financed < 0) throw new Error(`Fees for ${name} must be zero or positive.`);
+
+      const months = unit==='years' ? term*12 : term;
+      if(months < 1 || months > 600) throw new Error(`${name} must have a term between 1 and 600 months.`);
+
+      const netBorrowingNeed=baseBorrow-down-rebate;
+      const amountFinanced=netBorrowingNeed+financed;
+
+      let monthlyPayment, resetPayment=null, totalScheduledPayments, resetMonth=null, remainingBalanceAtReset=null;
+      if(rateType==='variable'){
+        resetMonth = resetUnit==='years' ? resetAfter*12 : resetAfter;
+        if(resetMonth >= months) throw new Error(`The rate change for ${name} must occur before the end of the loan term.`);
+        const vr = calculateVariableLoan(amountFinanced, rate, newRate, months, resetMonth);
+        monthlyPayment = vr.initialPayment;
+        resetPayment = vr.resetPayment;
+        totalScheduledPayments = vr.totalScheduledPayments;
+        remainingBalanceAtReset = vr.remainingBalance;
+      } else {
+        monthlyPayment = payment(amountFinanced,rate,months);
+        totalScheduledPayments = monthlyPayment*months;
+      }
+
+      const totalInterest=totalScheduledPayments-amountFinanced;
+      const totalFees=upfront+financed;
+      const totalFinancingCost=totalInterest+totalFees;
+      const totalPurchaseCost=down+totalScheduledPayments+upfront;
+
+      loans.push({
+        name,type,rateType,rate,newRate,resetMonth,remainingBalanceAtReset,months,down,rebate,netBorrowingNeed,
+        upfront,financed,amountFinanced,monthlyPayment,resetPayment,totalScheduledPayments,totalInterest,
+        totalFees,totalFinancingCost,totalPurchaseCost
+      });
+    }
+    return loans;
+  }
+
+  function calculate(){
+    $('message').textContent='';
+    $('results').classList.add('hidden');
+
+    const baseBorrow=parseFloat($('baseBorrow').value);
+    if(!Number.isFinite(baseBorrow) || baseBorrow <= 0){
+      $('message').textContent='Enter an amount greater than zero for the purchase price / borrowing need.';
+      return;
+    }
+
+    let loans;
+    try{ loans=readLoans(baseBorrow); } catch(err){
+      $('message').textContent=err.message;
+      return;
+    }
+    if(loans.length < 2){
+      $('message').textContent='Enter at least two loan options.';
+      return;
+    }
+
+    const minPayment=Math.min(...loans.map(x=>x.monthlyPayment));
+    const minInterest=Math.min(...loans.map(x=>x.totalInterest));
+    const minCost=Math.min(...loans.map(x=>x.totalFinancingCost));
+    const minCash=Math.min(...loans.map(x=>x.totalPurchaseCost));
+
+    const resultLabel=$('caseLabel').value.trim();
+    $('resultLabel').innerHTML=resultLabel?`<h2 style="margin-bottom:4px;">${esc(resultLabel)}</h2>`:'';
+
+    $('comparisonBody').innerHTML=loans.map(l=>{
+      const costDiff=l.totalFinancingCost-minCost;
+      const paymentDiff=l.monthlyPayment-minPayment;
+      return `<tr>
+        <td><strong>${esc(l.name)}</strong>
+        <div class="small">${esc(l.type)} • ${l.rateType==='variable'?'Variable':'Fixed'} • ${pct(l.rate)}${l.rateType==='variable'?` → ${pct(l.newRate)} after ${l.resetMonth.toFixed(0)} months`:''} • ${l.months.toFixed(0)} months</div>
+      </td>
+        <td class="amount">${money(l.down)}</td>
+        <td class="amount">${money(l.rebate)}</td>
+        <td class="amount">${money(l.amountFinanced)}</td>
+        <td class="amount ${Math.abs(l.monthlyPayment-minPayment)<0.005?'best':''}">
+        ${money(l.monthlyPayment)}
+        ${l.rateType==='variable'?`<div class="diff">Initial payment; after reset: ${money(l.resetPayment)}</div>`:''}
+        ${paymentDiff>0.005?`<div class="diff">${money(paymentDiff)} more/month initially than lowest</div>`:''}
+      </td>
+        <td class="amount ${Math.abs(l.totalInterest-minInterest)<0.005?'best':''}">${money(l.totalInterest)}</td>
+        <td class="amount">${money(l.totalFees)}</td>
+        <td class="amount ${Math.abs(l.totalFinancingCost-minCost)<0.005?'best':''}">${money(l.totalFinancingCost)}${costDiff>0.005?`<div class="diff">${money(costDiff)} more than lowest cost</div>`:'<div class="diff">Lowest total borrowing cost</div>'}</td>
+        <td class="amount ${Math.abs(l.totalPurchaseCost-minCash)<0.005?'best':''}">${money(l.totalPurchaseCost)}</td>
+      </tr>`;
+    }).join('');
+
+    const lowestPaymentLoan=loans.reduce((a,b)=>a.monthlyPayment<=b.monthlyPayment?a:b);
+    const lowestCostLoan=loans.reduce((a,b)=>a.totalFinancingCost<=b.totalFinancingCost?a:b);
+    const shortestLoan=loans.reduce((a,b)=>a.months<=b.months?a:b);
+    const longestLoan=loans.reduce((a,b)=>a.months>=b.months?a:b);
+
+    $('differenceCards').innerHTML=`
+      <div class="metric"><div class="k">Lowest Monthly Payment</div><div class="v">${money(lowestPaymentLoan.monthlyPayment)}</div><div class="small">${esc(lowestPaymentLoan.name)}</div></div>
+      <div class="metric"><div class="k">Lowest Total Financing Cost</div><div class="v">${money(lowestCostLoan.totalFinancingCost)}</div><div class="small">${esc(lowestCostLoan.name)}</div></div>
+      <div class="metric"><div class="k">Cost Difference: Longest vs. Shortest Term</div><div class="v">${money(Math.abs(longestLoan.totalFinancingCost-shortestLoan.totalFinancingCost))}</div><div class="small">${longestLoan.months.toFixed(0)} vs. ${shortestLoan.months.toFixed(0)} months</div></div>
+      <div class="metric"><div class="k">Range of Total Financing Costs</div><div class="v">${money(Math.max(...loans.map(x=>x.totalFinancingCost))-minCost)}</div><div class="small">Highest cost minus lowest cost</div></div>`;
+
+    $('detailCards').innerHTML=loans.map(l=>{
+      const versusBest=l.totalFinancingCost-minCost;
+      return `<div class="loan-card">
+        <h3 style="margin-top:0;">${esc(l.name)}</h3>
+        <div class="result-grid">
+          <div class="metric"><div class="k">Purchase Price / Borrowing Need</div><div class="v">${money(baseBorrow)}</div></div>
+          <div class="metric"><div class="k">Down Payment</div><div class="v">${money(l.down)}</div></div>
+          <div class="metric"><div class="k">Cash Rebate</div><div class="v">${money(l.rebate)}</div></div>
+          <div class="metric"><div class="k">Net Borrowing Need</div><div class="v">${money(l.netBorrowingNeed)}</div></div>
+          <div class="metric"><div class="k">Financed Fees</div><div class="v">${money(l.financed)}</div></div>
+          <div class="metric"><div class="k">Amount Financed</div><div class="v">${money(l.amountFinanced)}</div></div>
+          <div class="metric"><div class="k">Rate Structure</div><div class="v">${l.rateType==='variable'?'Variable':'Fixed'}</div></div>
+          <div class="metric"><div class="k">${l.rateType==='variable'?'Initial Monthly Payment':'Monthly Payment'}</div><div class="v">${money(l.monthlyPayment)}</div></div>
+          ${l.rateType==='variable'?`
+          <div class="metric"><div class="k">Assumed Rate After Reset</div><div class="v">${pct(l.newRate)}</div></div>
+          <div class="metric"><div class="k">Payment After Reset</div><div class="v">${money(l.resetPayment)}</div></div>
+          <div class="metric"><div class="k">Rate Changes After</div><div class="v">${l.resetMonth.toFixed(0)} months</div></div>
+          <div class="metric"><div class="k">Balance at Reset</div><div class="v">${money(l.remainingBalanceAtReset)}</div></div>`:''}
+          <div class="metric"><div class="k">Total Scheduled Payments</div><div class="v">${money(l.totalScheduledPayments)}</div></div>
+          <div class="metric"><div class="k">Total Interest</div><div class="v">${money(l.totalInterest)}</div></div>
+          <div class="metric"><div class="k">Total Fees</div><div class="v">${money(l.totalFees)}</div></div>
+          <div class="metric"><div class="k">Total Financing Cost</div><div class="v">${money(l.totalFinancingCost)}</div></div>
+          <div class="metric"><div class="k">Total Purchase / Cash Cost</div><div class="v">${money(l.totalPurchaseCost)}</div></div>
+        </div>
+        <p>${versusBest < 0.005 ? '<strong>This option has the lowest total financing cost among the options entered.</strong>' : `This option costs approximately <strong>${money(versusBest)} more</strong> than the lowest-cost option entered.`}</p>
+      </div>`;
+    }).join('');
+
+    $('results').classList.remove('hidden');
+    $('results').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function clearAll(){
+    $('baseBorrow').value='';
+    $('caseLabel').value='';
+    $('loanOptions').innerHTML='';
+    $('message').textContent='';
+    $('results').classList.add('hidden');
+    loanCounter=0;
+    addLoan({name:'Option A'});
+    addLoan({name:'Option B'});
+    addLoan({name:'Option C'});
+    $('baseBorrow').focus();
+  }
+
+  $('addLoan').addEventListener('click',()=>addLoan());
+  $('calculate').addEventListener('click',calculate);
+  $('clearAll').addEventListener('click',clearAll);
+
+  addLoan({name:'Option A'});
+  addLoan({name:'Option B'});
+  addLoan({name:'Option C'});
+})();
+</script>
+</body>
+</html>
